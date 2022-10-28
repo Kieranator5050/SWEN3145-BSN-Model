@@ -293,6 +293,8 @@ attributes
     xCoord: XAxis
     yCoord: YAxis
     isOccupied: Boolean
+    isVisibleTo: GamePlayer
+    isHiddenTo: GamePlayer
 end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
