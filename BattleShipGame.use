@@ -4,8 +4,8 @@ model BattleShipGame
 -- Enumerations
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 enum PrivacyPolicy { Closed, FriendsOnly, Open }
-enum YAxis {A, B, C, D, E, F, G, H, I, J }
-enum XAxis {y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
+enum YAxis { A, B, C, D, E, F, G, H, I, J }
+enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
 enum GameInviteStatus { Sent, Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
@@ -122,7 +122,7 @@ end
 abstract class Subject
 end
 
-abstract class Turn < Subject
+abstract class Turn < Subject, Observer
 attributes
     currentPlayer: GamePlayer
     selectedShip: GameShip
@@ -380,7 +380,7 @@ association PlayerBoard between
 end
 
 association Subjects between
-    Observer[1] role observer
+    Observer[*] role observer
     Subject[*] role subjects
 end
 
