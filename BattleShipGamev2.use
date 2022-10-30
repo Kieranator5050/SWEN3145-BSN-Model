@@ -323,62 +323,14 @@ end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Association Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
-associationclass SocialNetworkPlayerStats between
-    BattleShipSocialNetwork[1] role bsn
-    Player[*] role bsnPlayers
-attributes
-    regGame_winLossRatio: Real
-    tournGame_winLossRatio: Real
-    friendCount: Real
-    username: String
-    accountCreatedAt: DateTime
-    country: String
-    language: String
-    privacyPolicy: PrivacyPolicy
-end
-
-
-associationclass GameInvite between
-    Player[1] role requester
-    Player[1] role recipient
-attributes
-    status: GameInviteStatus
-    sentAt: DateTime
-constraints
-    --A game can only be in the starting phase while an invite is still being sent
-
-    --A game can only initialize, start and end  when an invite is accepted
-
-    --A game invite cannot be sent after a match
-end
-
-associationclass PlayerGame between
-    Player[2] role gamePlayers
-    Game[0..1] role game
-attributes
-    status: PlayerStatus
-    gameResult: GameResult
-constraints
-    -- A player who leaves a game in progress will recieve a loss
-
-end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Associations
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
-association PlayerRoom between
-    Player[2..*] role players
-    GameRoom[1] role gameRoom
-end
 
 association Games between
     GameRoom[1] role gameRoom 
     Game[1..*] role game
-end
-
-association PlayerBoard between
-    Player[1] role player 
-    GameBoard[1] role gameBoard
 end
 
 association Subjects between
