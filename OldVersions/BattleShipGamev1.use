@@ -1,0 +1,422 @@
+model BattleShipGame
+/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+-- Enumerations
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+enum PrivacyPolicy { Closed, FriendsOnly, Open }
+enum YAxis { A, B, C, D, E, F, G, H, I, J }
+enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
+enum GameStatus { Starting ,Initialized, Started, Over }
+enum GameInviteStatus { Sent, Declined, Accepted, Invalid }
+enum GameBoardStatus { Unassigned, Assigned }
+enum GamePlayer { Player1, Player2, Unassigned }
+enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
+enum GameShipSizes { s1, s2, s3, s4 }
+enum PlayerStatus { InGame, LeftGame }
+enum GameResult { Win, Loss, Timeout, Unassigned }
+
+--/*
+-- Datatype Classes
+--*/
+class Date
+attributes
+    day: Integer init: 1
+    month: Integer init: 1
+    year: Integer init: 1901
+
+operations
+    --/** Updates the attribute values */
+    initialise(d: Integer, m: Integer, y: Integer)
+    begin
+        self.day := d;
+        self.month := m;
+        self.year := y;
+    end
+    pre parametersHaveValidValues: isValid(d, m, y)
+    post attributesCorrectlyUpdatedAlt:
+        (if d = day@pre then day = day@pre else day = d endif) and
+            (if m = month@pre then month = month@pre else month = m endif) and
+                (if y = year@pre then year = year@pre else year = y endif)
+
+    --/* Accessors */
+    getDay(): Integer = day
+    getMonth(): Integer = month
+    getYear(): Integer = year
+
+    --/* Mutators - ***** Fill in your OCL expressions and pre- and
+    --            post-conditions for these  from the previous Modelling
+    --            session that asked you to write them. */
+    setDay(d: Integer)
+    setMonth(m: Integer)
+    setYear(y: Integer)
+
+    --/** returns true if all the attributes are not null, false otherwise */
+    isInitialised(): Boolean =
+        day <> null and month <> null and year <> null
+
+    --/** returns true if self is before d, , false otherwise */
+    before(d: Date): Boolean = true /* ***** Fill in your OCL expression
+                from  the previous Modelling session that asked you
+                to write it. */
+
+    --/** returns true if self has the same values as d, false otherwise */
+    equals(d: Date): Boolean = day = d.day and month = d.month and year = d.year
+    pre bothAreInitialised: isInitialised() and d.isInitialised()
+    pre bothAreValid: isValid(day, month, year) and
+        isValid(d.day, d.month, d.year)
+    post returnValueConditions:
+        let
+            s = Set{day = d.day, month = d.month, year = d.month}
+        in
+            result =  s->excludes(false) /* true or flase will be in result */
+
+    --/* returns true if self is after d, false otherwise */
+    after(d: Date): Boolean = not equals(d) and not before(d)
+
+    --/* returns true if y is a leap year, false otherwise */
+    isLeapYear(y: Integer): Boolean =
+        if (y.mod(400)=0 or (y.mod(100)>0 and y.mod(4)=0))
+        then true
+        else false
+        endif
+    pre yearIsValid: y > 1900
+
+    dayValid(v: Integer): Boolean = v >= 1 and v <= 31
+
+    monthValid(v: Integer): Boolean =  v >= 1 and v <= 12
+
+    yearValid(v: Integer): Boolean = v > 1900
+
+    dayAndMonthValid(d: Integer, m: Integer): Boolean =
+        Set{4, 6, 9, 11}->includes(m) implies d < 31
+
+    febValid(d: Integer, y: Integer): Boolean =
+        (isLeapYear(y) implies d <= 29) and
+            (not isLeapYear(y) implies d <= 28)
+
+    isValid(d: Integer, m: Integer, y: Integer): Boolean =
+         dayValid(d) and monthValid(m) and yearValid(y) and
+            dayAndMonthValid(d, m) and (m = 2 implies febValid(d, y))
+
+constraints
+    inv dayValues: dayValid(day)
+    inv monthValues: monthValid(month)
+    inv yearValues: yearValid(year)
+    inv monthsWith30Days: dayAndMonthValid(day, month)
+    inv inLeapYearFebDaysCorrect: month = 2 implies febValid(day, year)
+end
+
+class DateTime < Date
+attributes
+    hour: Integer
+    minute: Integer
+    second: Integer
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+-- Abstract Classes
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+abstract class Observer
+end
+
+abstract class Subject
+end
+
+abstract class Turn < Subject, Observer
+attributes
+    currentPlayer: GamePlayer
+    selectedShip: Ship
+    selectedShipClassification: GameShip
+    selectedShipAP: Integer
+    usedAP: Integer
+    currentShipAP: Integer derived = selectedShipAP-usedAP
+    turnTime: DateTime
+    canRepeat: Boolean
+constraints
+    -- The current player turn is player 1 when the turn counter is even and player 2 when the turn counter is odd
+    inv correctPlayer: game.turnCount.mod(2)=0 implies currentPlayer = GamePlayer::Player1
+                        and game.turnCount.mod(2)=1 implies currentPlayer = GamePlayer::Player2
+end
+
+abstract class Ship < Subject
+attributes
+    assignedPlayer: GamePlayer
+    healthPoints: Integer init: 0
+    damagePoints: Integer init: 0
+    actionPoints: Integer init : 0
+    size: GameShipSizes
+    classification: GameShip --There can be 2 of each classification
+end
+
+abstract class GameRoom
+attributes
+    createdAt: DateTime
+end
+
+abstract class MoveAction < Turn
+attributes
+    isValid: Boolean
+constraints
+    --A ship cannot move into another ship
+
+    --A ship can move 1 cell up, 1 cell down or transform to the left or right
+
+    --A ship can only move on the current player's board
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+--Extended Concrete Classes
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+class Game < Observer
+attributes
+    status: GameStatus init: GameStatus::Starting
+    turnCount: Integer init: 0
+    startedAt: DateTime
+constraints
+    --A game cannot start before a player's account was created
+
+    --A player cannot be in 2 game rooms at once
+end
+
+class RegularRoom < GameRoom
+end
+
+class TournamentRoom < GameRoom
+    --A tournament room can only have a limited number of game instances based on the registered players
+end
+
+-- Add Constraints to enforce the correct points when the game starts
+-- Add Constraints to enforce a valid amount of points during the game
+class PatrolBoat < Ship
+end
+
+class Destroyer < Ship
+end
+
+class Cruiser < Ship
+end
+
+class Battleship < Ship
+end
+
+class MoveUp < MoveAction
+end
+
+class MoveDown < MoveAction
+end
+
+class MoveLeft < MoveAction
+end
+
+class MoveRight < MoveAction
+end
+
+class FireAction < Turn
+attributes
+    isHit: Boolean
+constraints
+    --A ship may only fire if it has the required amount of action points
+    inv validFire:
+        let
+            ship = game.ships->select(s|
+                                    s.assignedPlayer=self.currentPlayer 
+                                    and 
+                                    s.classification=self.selectedShip)->asOrderedSet()->last()
+        in
+            ship.actionPoints>0
+    
+    --A ship can only fire on the enemy board
+end
+
+class SpecialAbilityAction < Turn
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+-- Unextended Classes
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+class BattleShipSocialNetwork
+end
+
+class Player 
+attributes
+end
+
+class GameBoard
+attributes
+    assignedPlayerUsername: String
+    assignedPlayer: GamePlayer
+    status: GameBoardStatus
+    assignedAt: DateTime
+constraints
+    -- The game board must have 10 ships on both boards when it is initialized. 
+    -- 20 Cells are occupied in total on the board when all the ships are placed
+    inv validInitShipCount: 
+        (status=GameBoardStatus::Assigned and game.status=GameStatus::Initialized)
+            implies
+                cells->select(c|c.ship->size()=1)->size()=20
+    
+    -- Ships should be placed vertically only
+    -- Recall a ship can be at most 4 cells long
+    inv validShipPlacement:
+    let 
+        y = OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J},
+        x = OrderedSet{XAxis::y1, XAxis::y2, XAxis::y3, XAxis::y4, XAxis::y5, XAxis::y6, XAxis::y7, XAxis::y8, XAxis::y9, XAxis::y10}
+    in 
+    ((status=GameBoardStatus::Assigned 
+    and 
+    game.status=GameStatus::Initialized or game.status=GameStatus::Started))
+        implies
+            game.ships->forAll(s|
+                            s.shipSpace->forAll(ss1, ss2|
+                                x->indexOf(ss1.xCoord)=x->indexOf(ss2.xCoord) 
+                                and
+                                    (y->indexOf(ss1.yCoord)+1 = y->indexOf(ss2.yCoord)
+                                    or
+                                    y->indexOf(ss1.yCoord)+2 = y->indexOf(ss2.yCoord)
+                                    or
+                                    y->indexOf(ss1.yCoord)+3 = y->indexOf(ss2.yCoord)
+                                    or 
+                                    y->indexOf(ss1.yCoord)+4 = y->indexOf(ss2.yCoord)
+                                    or
+                                    y->indexOf(ss1.yCoord)-1 = y->indexOf(ss2.yCoord)
+                                    or
+                                    y->indexOf(ss1.yCoord)-2 = y->indexOf(ss2.yCoord)
+                                    or
+                                    y->indexOf(ss1.yCoord)-3 = y->indexOf(ss2.yCoord)
+                                    or 
+                                    y->indexOf(ss1.yCoord)-4 = y->indexOf(ss2.yCoord)
+                                    )
+                                )) 
+
+
+end
+
+class BoardCell
+attributes 
+    xCoord: XAxis
+    yCoord: YAxis
+    isOccupied: Boolean
+    isVisibleTo: GamePlayer
+    isHiddenTo: GamePlayer
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+--Compositions
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+composition GameBoards between
+    Game[1]
+    GameBoard[2] role gameBoards
+end
+
+composition GameCells between
+    GameBoard[1]
+    BoardCell[100] role cells 
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+--Aggregations
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+aggregation GameShips between
+    Game[1]
+    Ship[0..20] role ships
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+--Association Classes
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+associationclass SocialNetworkPlayerStats between
+    BattleShipSocialNetwork[1] role bsn
+    Player[*] role bsnPlayers
+attributes
+    regGame_winLossRatio: Real
+    tournGame_winLossRatio: Real
+    friendCount: Real
+    username: String
+    accountCreatedAt: DateTime
+    country: String
+    language: String
+    privacyPolicy: PrivacyPolicy
+end
+
+
+associationclass GameInvite between
+    Player[1] role requester
+    Player[1] role recipient
+attributes
+    status: GameInviteStatus
+    sentAt: DateTime
+constraints
+    --A game can only be in the starting phase while an invite is still being sent
+
+    --A game can only initialize, start and end  when an invite is accepted
+
+    --A game invite cannot be sent after a match
+end
+
+associationclass PlayerGame between
+    Player[2] role gamePlayers
+    Game[0..1] role game
+attributes
+    status: PlayerStatus
+    gameResult: GameResult
+constraints
+    -- A player who leaves a game in progress will recieve a loss
+
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+--Associations
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+association PlayerRoom between
+    Player[2..*] role players
+    GameRoom[1] role gameRoom
+end
+
+association Games between
+    GameRoom[1] role gameRoom 
+    Game[1..*] role game
+end
+
+association PlayerBoard between
+    Player[1] role player 
+    GameBoard[1] role gameBoard
+end
+
+association Subjects between
+    Observer[*] role observer
+    Subject[*] role subjects
+end
+
+association CurrentPlayerBoard between
+    Turn[*] role playerTurns ordered
+    GameBoard[1] role currentPlayerBoard 
+end
+
+association GameTurns between
+    Game[1] role game
+    Turn[*] role turns ordered
+end
+
+association PositionedOn between
+    Ship[0..1] role ship 
+    BoardCell[0..4] role shipSpace
+end
+
+association Attack between
+    FireAction[*] role attacks
+    BoardCell[1..*] role attackedCells
+end 
+
+association AttackBoard between
+    FireAction[*] role attacks
+    GameBoard[1] role enemyPlayerBoard
+end
+
+association ShipMove between
+    MoveAction[1] role move
+    BoardCell[2..8] role affectedCells
+end
+
+--/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
+--Some Constraints
+---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+constraints
