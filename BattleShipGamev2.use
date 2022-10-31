@@ -6,7 +6,7 @@ enum PrivacyPolicy { Closed, FriendsOnly, Open }
 enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
-enum GameInviteStatus { Sent, Declined, Accepted, Invalid }
+enum InviteStatus { Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
 enum GamePlayer { Player1, Player2, Unassigned }
 enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
@@ -14,6 +14,8 @@ enum GameShipSizes { s1, s2, s3, s4 }
 enum PlayerStatus { InGame, LeftGame }
 enum PlayerStat { regGameWinLossRatio, tournGameWinLossRatio, friendCount }
 enum GameResult { Win, Loss, Timeout, Unassigned }
+enum RequestStatus { Sent, Recieved }
+enum ReportCriteria { Cheating, InnapropriateText }
 
 --/*
 -- Datatype Classes
@@ -171,6 +173,11 @@ constraints
     --A ship can only move on the current player's board
 end
 
+abstract class Request < PDP
+attributes
+    status: RequestStatus
+end
+
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Extended Concrete Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -183,6 +190,33 @@ constraints
     --A game cannot start before a player's account was created
 
     --A player cannot be in 2 game rooms at once
+end
+
+class Message < Request
+attributes 
+    body: String
+end
+
+class FriendRequest < Request
+attributes
+    inviteStatus: InviteStatus
+end
+
+class GameInvite < Request
+attributes 
+    inviteStatus: InviteStatus
+end
+
+class Blocked < Request
+attributes
+    isBlocked: Boolean
+end
+
+class Report < Request
+attributes
+    isReported: Boolean
+    body: String
+    criteria: ReportCriteria
 end
 
 class RegularRoom < GameRoom
@@ -238,10 +272,6 @@ end
 class SpecialAbilityAction < Turn
 end
 
-class GameInvite < PDP
-attributes 
-end
-
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 -- Unextended Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -251,6 +281,7 @@ end
 class Player 
 attributes
     playerGameSlot : GamePlayer
+    privacyPolicy: PrivacyPolicy
 end
 
 class Stat
@@ -364,12 +395,12 @@ end
 
 association Requesters between
     Player[1] role requester
-    GameInvite[*] role sentInvites
+    Request[*] role sentRequests
 end
 
 association Recipients between
     Player[1] role recipient
-    GameInvite[*] role recievedInvites
+    Request[*] role recievedRequests
 end
 
 association RegularGame between
