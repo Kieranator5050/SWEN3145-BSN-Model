@@ -219,6 +219,9 @@ attributes
     criteria: ReportCriteria
 end
 
+class Banned < Request
+end
+
 class RegularRoom < GameRoom
 end
 
@@ -282,6 +285,9 @@ class Player
 attributes
     playerGameSlot : GamePlayer
     privacyPolicy: PrivacyPolicy
+end
+
+class Administrator < Player
 end
 
 class Stat
@@ -401,6 +407,11 @@ end
 association Recipients between
     Player[1] role recipient
     Request[*] role recievedRequests
+end
+
+association Bans between
+    Administrator[1] role banner redefines requester
+    Banned[*] role bans redefines sentRequests
 end
 
 association RegularGame between
