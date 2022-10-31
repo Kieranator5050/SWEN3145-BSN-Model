@@ -178,12 +178,15 @@ attributes
     status: RequestStatus
 end
 
+abstract class Leaderboard
+end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Extended Concrete Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 class Game < Observer
 attributes
     status: GameStatus init: GameStatus::Starting
+    result: GameResult init: GameResult::Unassigned
     turnCount: Integer init: 0
     startedAt: DateTime
 constraints
@@ -229,6 +232,12 @@ end
 
 class TournamentRoom < GameRoom
     --A tournament room can only have a limited number of game instances based on the registered players
+end
+
+class RegularLeaderboard < Leaderboard
+end
+
+class TournamentLeaderboard < Leaderboard
 end
 
 -- Add Constraints to enforce the correct points when the game starts
@@ -414,6 +423,16 @@ end
 association Bans between
     Administrator[1] role banner redefines requester
     Banned[*] role bans redefines sentRequests
+end
+
+association RegLeaderboardStats between
+    RegularLeaderboard[1] role regLeaderBoard
+    Stat[*] role regStats
+end
+
+association TournLeaderboardStats between
+    TournamentLeaderboard[1] role tournLeaderBoard
+    Stat[*] role tournStats
 end
 
 association RegularGame between
