@@ -220,6 +220,8 @@ attributes
 end
 
 class Banned < Request
+attributes 
+    isBanned: Boolean
 end
 
 class RegularRoom < GameRoom
