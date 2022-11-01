@@ -6,6 +6,8 @@ enum PrivacyPolicy { Closed, FriendsOnly, Open, Unassigned }
 enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
+enum TournamentStatus { Open, InProgress, Closed }
+enum RoundIntervalType { Minutes, Hours, Days }
 enum InviteStatus { Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
 enum GamePlayer { Player1, Player2, Unassigned }
@@ -118,12 +120,6 @@ end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 -- Abstract Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
-abstract class PEP
-end
-
-abstract class PDP
-end
-
 
 abstract class Observer
 end
@@ -169,7 +165,7 @@ constraints
     --A ship can only move on the current player's board
 end
 
-abstract class Request < PDP
+abstract class Request
 attributes
     status: RequestStatus
 end
@@ -185,6 +181,7 @@ attributes
     result: GameResult init: GameResult::Unassigned
     turnCount: Integer init: 0
     startedAt: DateTime
+    gameTime: Integer
 constraints
     --A game cannot start before a player's account was created
 
@@ -283,11 +280,15 @@ end
 
 class Player 
 attributes
+    username: String
     playerGameSlot : GamePlayer
     privacyPolicy: PrivacyPolicy
 end
 
 class Administrator < Player
+end
+
+class Host < Player
 end
 
 class Stat
@@ -356,8 +357,26 @@ attributes
 end
 
 class Tournament
+attributes
+    status: TournamentStatus
+    startDate: DateTime
+    roundInterval: Integer init: 15
+    roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
+    minGamesToJoin: Integer init: 0
+    maxWinLossRatio: Real init: 100000
+    minWinLossRatio: Real init: -100000
 end
 
+class BannedPlayer
+attributes
+    username: String
+end
+
+class Bracket
+end
+
+class Round
+end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Compositions
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -397,6 +416,11 @@ association Players between
     Player[*] role ssnPlayers
 end
 
+association Hoster between
+    Host[1] role host 
+    Tournament[*] role createdTournaments
+end
+
 association PlayerStats between
     Player[1] role player
     Stat[1..*] role stat 
@@ -412,9 +436,34 @@ association TournLeaderboard between
     TournamentLeaderboard[1] role tournLeaderBoard 
 end
 
+association TBracket between
+    Tournament[1] role tourn
+    Bracket[1] role brack
+end
+
+association TGames between
+    Tournament[1] role tourn
+    Game[1..*] role games ordered
+end
+
+association Rounds between
+    Bracket[1] role brack
+    Round[1..*] role rounds
+end
+
+association RoundGames between
+    Round[1] role round
+    Game[1..*] role games ordered
+end
+
 association LeaderBoardPlayers between
     Leaderboard[1] role leaderboard
     Player[*] role leaderboardPlayers ordered
+end
+
+association BannedPlayers between
+    Tournament[1] role tourn
+    BannedPlayer[*] role bannedPlayers
 end
 
 association Requesters between
@@ -427,13 +476,8 @@ association Recipients between
     Request[*] role recievedRequests
 end
 
-association Creaters between
-    Player[1] role creater
-    Tournament[*] role createdTournaments
-end
-
 association Joiners between
-    Player[1] role joiner
+    Player[*] role joiners
     Tournament[*] role joinedTournaments
 end
 
