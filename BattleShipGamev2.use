@@ -2,7 +2,7 @@ model BattleShipGame
 /* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 -- Enumerations
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
-enum PrivacyPolicy { Closed, FriendsOnly, Open }
+enum PrivacyPolicy { Closed, FriendsOnly, Open, Unassigned }
 enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
@@ -155,11 +155,7 @@ attributes
     actionPoints: Integer init : 0
     size: GameShipSizes
     classification: GameShip --A player has individual classifications
-end
-
-abstract class GameRoom < PEP
-attributes
-    createdAt: DateTime
+    isOnTheBoard: Boolean
 end
 
 abstract class MoveAction < Turn
@@ -225,13 +221,6 @@ end
 class Banned < Request
 attributes 
     isBanned: Boolean
-end
-
-class RegularRoom < GameRoom
-end
-
-class TournamentRoom < GameRoom
-    --A tournament room can only have a limited number of game instances based on the registered players
 end
 
 class RegularLeaderboard < Leaderboard
@@ -366,6 +355,9 @@ attributes
     isHiddenTo: GamePlayer
 end
 
+class Tournament
+end
+
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Compositions
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -392,7 +384,7 @@ end
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 associationclass Accepted between
     GameInvite[1] role invite
-    GameRoom[0..1] role gameRoom
+    Game[0..1] role game
 attributes
     dateAccepted: DateTime
 end
@@ -410,6 +402,21 @@ association PlayerStats between
     Stat[1..*] role stat 
 end
 
+association RegLeaderboard between
+    BattleShipSocialNetwork[1] role bsn
+    RegularLeaderboard[1] role regLeaderBoard 
+end
+
+association TournLeaderboard between
+    BattleShipSocialNetwork[1] role bsn
+    TournamentLeaderboard[1] role tournLeaderBoard 
+end
+
+association LeaderBoardPlayers between
+    Leaderboard[1] role leaderboard
+    Player[*] role leaderboardPlayers ordered
+end
+
 association Requesters between
     Player[1] role requester
     Request[*] role sentRequests
@@ -420,24 +427,19 @@ association Recipients between
     Request[*] role recievedRequests
 end
 
+association Creaters between
+    Player[1] role creater
+    Tournament[*] role createdTournaments
+end
+
+association Joiners between
+    Player[1] role joiner
+    Tournament[*] role joinedTournaments
+end
+
 association Bans between
     Administrator[1] role banner redefines requester
     Banned[*] role bans redefines sentRequests
-end
-
-association RegLeaderboardStats between
-    RegularLeaderboard[1] role regLeaderBoard
-    Stat[*] role regStats
-end
-
-association TournLeaderboardStats between
-    TournamentLeaderboard[1] role tournLeaderBoard
-    Stat[*] role tournStats
-end
-
-association RegularGame between
-    RegularRoom[1] role regRoom
-    Game[1] role regGame
 end
 
 association Subjects between
