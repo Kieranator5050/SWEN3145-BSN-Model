@@ -476,6 +476,11 @@ association Recipients between
     Request[*] role recievedRequests
 end
 
+association MessageTo between
+    Message[1] role replyTo
+    Message[1] role sentMessage
+end
+
 association Joiners between
     Player[*] role joiners
     Tournament[*] role joinedTournaments
