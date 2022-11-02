@@ -18,6 +18,8 @@ enum PlayerStat { regGameWinLossRatio, tournGameWinLossRatio, friendCount }
 enum GameResult { Win, Loss, Timeout, Unassigned }
 enum RequestStatus { Sent, Recieved }
 enum ReportCriteria { Cheating, InnapropriateText }
+enum ChatroomType{ Private, Global }
+enum TournRules { minGamesToJoin, maxWinLossRatio, minWinLossRatio }
 
 --/*
 -- Datatype Classes
@@ -295,6 +297,8 @@ attributes
 end
 
 class Chatroom
+attributes
+    chatroomType: ChatroomType
 end
 
 class Stat
@@ -368,9 +372,12 @@ attributes
     startDate: DateTime
     roundInterval: Integer init: 15
     roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
-    minGamesToJoin: Integer init: 0
-    maxWinLossRatio: Real init: 100000
-    minWinLossRatio: Real init: -100000
+end
+
+class TournRule
+attributes
+    rule: TournRules
+    value: Real
 end
 
 class Round
@@ -454,6 +461,11 @@ association TGames between
     Game[1..*] role games ordered
 end
 
+association TRules between
+    Tournament[1] role tourn
+    TournRule[*] role tRules
+end
+
 association Rounds between
     Tournament[1] role tourn
     Round[1..*] role rounds
@@ -487,6 +499,16 @@ end
 association MessageTo between
     Message[1] role replyTo
     Message[1] role sentMessage
+end
+
+association ChatMessage between
+    Chatroom[1] role chatRoom
+    Message[*] role messages
+end
+
+association ChatRooms between
+    Chatroom[*] role chatRooms
+    Player[*] role chatPlayers
 end
 
 association Joiners between
