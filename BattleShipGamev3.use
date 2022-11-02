@@ -127,6 +127,9 @@ end
 abstract class Subject
 end
 
+abstract class pRole
+end
+
 abstract class Turn < Subject, Observer
 attributes
     currentPlayer: GamePlayer
@@ -186,6 +189,12 @@ constraints
     --A game cannot start before a player's account was created
 
     --A player cannot be in 2 game rooms at once
+end
+
+class Administrator < pRole
+end
+
+class Host < pRole
 end
 
 class Message < Request
@@ -285,10 +294,7 @@ attributes
     privacyPolicy: PrivacyPolicy
 end
 
-class Administrator < Player
-end
-
-class Host < Player
+class Chatroom
 end
 
 class Stat
@@ -367,14 +373,6 @@ attributes
     minWinLossRatio: Real init: -100000
 end
 
-class BannedPlayer
-attributes
-    username: String
-end
-
-class Bracket
-end
-
 class Round
 end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -426,6 +424,21 @@ association PlayerStats between
     Stat[1..*] role stat 
 end
 
+association PlayerRoles between
+    Player[*] role players
+    pRole[*] role pRoles union
+end
+
+association Admins between
+    Player[*] role admins
+    Administrator[0..1] role adminRole subsets pRoles
+end
+
+association Hosts between
+    Player[*] role hosts
+    Host[0..1] role hostRole subsets pRoles
+end
+
 association RegLeaderboard between
     BattleShipSocialNetwork[1] role bsn
     RegularLeaderboard[1] role regLeaderBoard 
@@ -436,18 +449,13 @@ association TournLeaderboard between
     TournamentLeaderboard[1] role tournLeaderBoard 
 end
 
-association TBracket between
-    Tournament[1] role tourn
-    Bracket[1] role brack
-end
-
 association TGames between
     Tournament[1] role tourn
     Game[1..*] role games ordered
 end
 
 association Rounds between
-    Bracket[1] role brack
+    Tournament[1] role tourn
     Round[1..*] role rounds
 end
 
@@ -462,8 +470,8 @@ association LeaderBoardPlayers between
 end
 
 association BannedPlayers between
-    Tournament[1] role tourn
-    BannedPlayer[*] role bannedPlayers
+    Tournament[*] role tourns
+    Player[*] role bannedPlayers
 end
 
 association Requesters between
@@ -484,11 +492,6 @@ end
 association Joiners between
     Player[*] role joiners
     Tournament[*] role joinedTournaments
-end
-
-association Bans between
-    Administrator[1] role banner redefines requester
-    Banned[*] role bans redefines sentRequests
 end
 
 association Subjects between
