@@ -123,16 +123,16 @@ end
 -- Abstract Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 
-abstract class Observer
+abstract class GameObserver
 end
 
-abstract class Subject
+abstract class GameSubject
 end
 
 abstract class pRole
 end
 
-abstract class Turn < Subject, Observer
+abstract class Turn < GameSubject, GameObserver
 attributes
     currentPlayer: GamePlayer
     selectedShip: Ship
@@ -148,7 +148,7 @@ constraints
                         and game.turnCount.mod(2)=1 implies currentPlayer = GamePlayer::Player2
 end
 
-abstract class Ship < Subject
+abstract class Ship < GameSubject
 attributes
     assignedPlayer: GamePlayer
     healthPoints: Integer init: 0
@@ -180,7 +180,7 @@ end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Extended Concrete Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
-class Game < Observer
+class Game < GameObserver
 attributes
     status: GameStatus init: GameStatus::Starting
     result: GameResult init: GameResult::Unassigned
@@ -516,9 +516,9 @@ association Joiners between
     Tournament[*] role joinedTournaments
 end
 
-association Subjects between
-    Observer[*] role observer
-    Subject[*] role subjects
+association GameSubjects between
+    GameObserver[*] role gObserver
+    GameSubject[*] role gSubjects
 end
 
 association CurrentPlayerBoard between
