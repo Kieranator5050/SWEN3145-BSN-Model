@@ -177,6 +177,9 @@ end
 
 abstract class Leaderboard
 end
+
+abstract class AccessRestriction
+end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Extended Concrete Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -214,21 +217,18 @@ attributes
     inviteStatus: InviteStatus
 end
 
-class Blocked < Request
-attributes
-    isBlocked: Boolean
-end
-
 class Report < Request
 attributes
-    isReported: Boolean
     body: String
     criteria: ReportCriteria
 end
 
-class Banned < Request
+class Blocked < AccessRestriction
+attributes
+end
+
+class Banned < AccessRestriction
 attributes 
-    isBanned: Boolean
 end
 
 class RegularLeaderboard < Leaderboard
@@ -438,12 +438,12 @@ end
 
 association Admins between
     Player[*] role admins
-    Administrator[0..1] role adminRole subsets pRoles
+    Administrator[0..1] role aRole subsets pRoles
 end
 
 association Hosts between
     Player[*] role hosts
-    Host[0..1] role hostRole subsets pRoles
+    Host[0..1] role hRole subsets pRoles
 end
 
 association RegLeaderboard between
