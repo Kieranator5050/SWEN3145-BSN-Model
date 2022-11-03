@@ -453,6 +453,11 @@ association SSNBans between
     Banned[*] role ssnBans
 end
 
+association Reports between
+    Administrator[*] role viewedBy
+    Report[*] role viewedReports
+end
+
 association Hosts between
     Player[*] role hosts
     Host[0..1] role hRole subsets pRoles
