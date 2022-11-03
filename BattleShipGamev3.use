@@ -135,6 +135,12 @@ end
 abstract class SSNSubject
 end
 
+abstract class TObserver
+end
+
+abstract class TSubject
+end
+
 abstract class pRole
 end
 
@@ -189,7 +195,7 @@ end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Extended Concrete Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
-class Player < SSNObserver
+class Player < SSNObserver, TObserver
 attributes
     username: String
     playerGameSlot : GamePlayer
@@ -249,6 +255,20 @@ class RegularLeaderboard < Leaderboard
 end
 
 class TournamentLeaderboard < Leaderboard
+end
+
+class Tournament < TSubject
+attributes
+    status: TournamentStatus
+    startDate: DateTime
+    roundInterval: Integer init: 15
+    roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
+end
+
+class TournRule < TSubject
+attributes
+    rule: TournRules
+    value: Real
 end
 
 -- Add Constraints to enforce the correct points when the game starts
@@ -371,20 +391,6 @@ attributes
     isOccupied: Boolean
     isVisibleTo: GamePlayer
     isHiddenTo: GamePlayer
-end
-
-class Tournament
-attributes
-    status: TournamentStatus
-    startDate: DateTime
-    roundInterval: Integer init: 15
-    roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
-end
-
-class TournRule
-attributes
-    rule: TournRules
-    value: Real
 end
 
 class Round
@@ -556,6 +562,11 @@ end
 association SSNSubjects between
     SSNObserver[*] role ssnObserver
     SSNSubject[*] role ssnSubjects
+end
+
+association TSubjects between
+    TObserver[*] role tObserver
+    TSubject[*] role tSubjects
 end
 
 association CurrentPlayerBoard between
