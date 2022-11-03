@@ -129,6 +129,12 @@ end
 abstract class GameSubject
 end
 
+abstract class SSNObserver
+end
+
+abstract class SSNSubject
+end
+
 abstract class pRole
 end
 
@@ -170,7 +176,7 @@ constraints
     --A ship can only move on the current player's board
 end
 
-abstract class Request
+abstract class Request < SSNSubject
 attributes
     status: RequestStatus
 end
@@ -178,11 +184,18 @@ end
 abstract class Leaderboard
 end
 
-abstract class AccessRestriction
+abstract class AccessRestriction < SSNSubject
 end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Extended Concrete Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+class Player < SSNObserver
+attributes
+    username: String
+    playerGameSlot : GamePlayer
+    privacyPolicy: PrivacyPolicy
+end
+
 class Game < GameObserver
 attributes
     status: GameStatus init: GameStatus::Starting
@@ -225,6 +238,7 @@ end
 
 class Blocked < AccessRestriction
 attributes
+    username: String
 end
 
 class Banned < AccessRestriction
@@ -287,13 +301,6 @@ end
 -- Unextended Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 class BattleShipSocialNetwork
-end
-
-class Player 
-attributes
-    username: String
-    playerGameSlot : GamePlayer
-    privacyPolicy: PrivacyPolicy
 end
 
 class Chatroom
@@ -441,9 +448,19 @@ association Admins between
     Administrator[0..1] role aRole subsets pRoles
 end
 
+association SSNBans between
+    Administrator[1] role admin
+    Banned[*] role ssnBans
+end
+
 association Hosts between
     Player[*] role hosts
     Host[0..1] role hRole subsets pRoles
+end
+
+association BannedTournPlayers between
+    Host[1] role host 
+    Banned[*] role TBans
 end
 
 association RegLeaderboard between
@@ -481,7 +498,7 @@ association LeaderBoardPlayers between
     Player[*] role leaderboardPlayers ordered
 end
 
-association BannedPlayers between
+association BannedTPlayers between
     Tournament[*] role tourns
     Player[*] role bannedPlayers
 end
@@ -489,6 +506,16 @@ end
 association Requesters between
     Player[1] role requester
     Request[*] role sentRequests
+end
+
+association BannedPlayer between
+    Player[1] role bPlayer
+    Banned[1] role ban
+end
+
+association Block between
+    Player[1] role blocker
+    Blocked[*] role block
 end
 
 association Recipients between
@@ -519,6 +546,11 @@ end
 association GameSubjects between
     GameObserver[*] role gObserver
     GameSubject[*] role gSubjects
+end
+
+association SSNSubjects between
+    SSNObserver[*] role ssnObserver
+    SSNSubject[*] role ssnSubjects
 end
 
 association CurrentPlayerBoard between
