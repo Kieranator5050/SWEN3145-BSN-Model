@@ -394,6 +394,9 @@ end
 
 class Round
 end
+
+class RequestFactory
+end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Compositions
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -518,11 +521,6 @@ association BannedTPlayers between
     Player[*] role bannedPlayers
 end
 
-association Requesters between
-    Player[1] role requester
-    Request[*] role sentRequests
-end
-
 association BannedPlayer between
     Player[1] role bPlayer
     Banned[1] role ban
@@ -541,6 +539,16 @@ end
 association Recipients between
     Player[1] role recipient
     Request[*] role recievedRequests
+end
+
+association RequesterFact between
+    Player[1] role requester
+    RequestFactory[*] role reqFacts
+end
+
+association Requests between
+    RequestFactory[1] role reqFact
+    Request[1] role sentRequest
 end
 
 association MessageTo between
