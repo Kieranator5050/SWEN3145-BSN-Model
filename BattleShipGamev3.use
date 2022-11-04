@@ -463,6 +463,11 @@ association Reports between
     Report[*] role viewedReports
 end
 
+association Reporters between
+    Player[1] role reportedPlayer redefines recipient
+    Report[*] role recievedRs redefines recievedRequests
+end
+
 association Hosts between
     Player[*] role hosts
     Host[0..1] role hRole subsets pRoles
