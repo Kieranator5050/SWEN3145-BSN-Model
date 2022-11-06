@@ -199,8 +199,10 @@ end
 class Player < SSNObserver, TObserver
 attributes
     username: String
-    playerGameSlot : GamePlayer
-    privacyPolicy: PrivacyPolicy
+    playerGameSlot : GamePlayer init: GamePlayer::Unassigned
+    privacyPolicy: PrivacyPolicy init: PrivacyPolicy::Open
+constraints
+    inv nullUsername: self.username <> null
 end
 
 class Game < GameObserver
@@ -259,7 +261,7 @@ end
 
 class Tournament < TSubject
 attributes
-    status: TournamentStatus
+    status: TournamentStatus init: TournamentStatus::Open
     startDate: DateTime
     roundInterval: Integer init: 15
     roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
@@ -268,7 +270,7 @@ end
 class TournRule < TSubject
 attributes
     rule: TournRules
-    value: Real
+    value: Real init: 0
 end
 
 -- Add Constraints to enforce the correct points when the game starts
@@ -337,7 +339,7 @@ end
 class GameBoard
 attributes
     assignedPlayerUsername: String
-    assignedPlayer: GamePlayer
+    assignedPlayer: GamePlayer init: GamePlayer::Unassigned
     status: GameBoardStatus
     assignedAt: DateTime
 constraints
