@@ -7,6 +7,7 @@ enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
 enum TournamentStatus { Open, InProgress, Closed }
+enum JoinedTStatus { Joined, Rejected, Left }
 enum RoundIntervalType { Minutes, Hours, Days }
 enum InviteStatus { Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
@@ -428,6 +429,14 @@ attributes
     dateAccepted: DateTime
 end
 
+associationclass Joiners between
+    Player[*] role joiners
+    Tournament[*] role joinedTournaments
+attributes
+    joinedAt: DateTime
+    status: JoinedTStatus
+end
+
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Associations
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -559,11 +568,6 @@ end
 association ChatRooms between
     Chatroom[*] role chatRooms
     Player[*] role chatPlayers
-end
-
-association Joiners between
-    Player[*] role joiners
-    Tournament[*] role joinedTournaments
 end
 
 association GameSubjects between
