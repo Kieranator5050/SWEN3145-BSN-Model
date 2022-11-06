@@ -7,7 +7,7 @@ enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
 enum TournamentStatus { Open, InProgress, Closed }
-enum JoinedTStatus { Joined, Rejected, Left }
+enum JoinedTStatus { Joined, Rejected, Banned, Eliminated, Left }
 enum RoundIntervalType { Minutes, Hours, Days }
 enum InviteStatus { Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
@@ -436,7 +436,7 @@ associationclass Joiners between
     Tournament[*] role joinedTournaments
 attributes
     joinedAt: DateTime
-    status: JoinedTStatus
+    status: JoinedTStatus init: JoinedTStatus::Joined
 end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -529,7 +529,7 @@ end
 
 association BannedPlayer between
     Player[1] role bPlayer
-    Banned[1] role ban
+    Banned[*] role bans
 end
 
 association Block between
