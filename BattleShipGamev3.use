@@ -511,11 +511,6 @@ association RoundGames between
     Game[1..*] role games ordered
 end
 
-association LeaderBoardPlayers between
-    Leaderboard[1] role leaderboard
-    Player[*] role leaderboardPlayers ordered
-end
-
 association BannedTPlayers between
     Tournament[*] role tourns
     Player[*] role bannedPlayers
@@ -615,8 +610,3 @@ association ShipMove between
     MoveAction[1] role move
     BoardCell[2..8] role affectedCells
 end
-
---/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
---Some Constraints
----------- ---------- ---------- ---------- ---------- ---------- ---------- */
-constraints
