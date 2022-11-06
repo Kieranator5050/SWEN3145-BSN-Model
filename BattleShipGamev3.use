@@ -461,7 +461,7 @@ association PlayerRoles between
 end
 
 association Admins between
-    Player[*] role admins
+    Player[1] role admin
     Administrator[0..1] role aRole subsets pRoles
 end
 
@@ -481,7 +481,7 @@ association Reporters between
 end
 
 association Hosts between
-    Player[*] role hosts
+    Player[1] role host
     Host[0..1] role hRole subsets pRoles
 end
 
