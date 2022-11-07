@@ -16,11 +16,11 @@ enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
 enum GameShipSizes { s1, s2, s3, s4 }
 enum PlayerStatus { InGame, LeftGame }
 enum PlayerStat { regGameWinLossRatio, tournGameWinLossRatio, friendCount }
-enum GameResult { Win, Loss, Timeout, Unassigned }
 enum RequestStatus { Sent, Recieved }
 enum ReportCriteria { Cheating, InnapropriateText }
 enum ChatroomType{ Private, Global }
-enum TournRules { minGamesToJoin, maxWinLossRatio, minWinLossRatio }
+enum TournRules { minGamesToJoin, maxWinLossRatio, minWinLossRatio, maxPlayers }
+enum GameResult {Unassigned, Won, Loss }
 
 --/*
 -- Datatype Classes
@@ -205,10 +205,9 @@ constraints
     inv nullUsername: self.username <> null
 end
 
-class Game < GameObserver
+class Game < GameObserver, TSubject
 attributes
     status: GameStatus init: GameStatus::Starting
-    result: GameResult init: GameResult::Unassigned
     turnCount: Integer init: 0
     startedAt: DateTime
     gameTime: Integer
@@ -314,9 +313,6 @@ constraints
             ship.actionPoints>0
     
     --A ship can only fire on the enemy board
-end
-
-class SpecialAbilityAction < Turn
 end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -429,6 +425,14 @@ associationclass Accepted between
     Game[0..1] role game
 attributes
     dateAccepted: DateTime
+    gameResult: GameResult init: GameResult::Unassigned
+end
+
+associationclass TournGame between
+    Player[*] role tournPlayers
+    Game[*] role tGames
+attributes
+    gameResult: GameResult init: GameResult::Unassigned
 end
 
 associationclass Joiners between
@@ -500,11 +504,6 @@ end
 association TournLeaderboard between
     BattleShipSocialNetwork[1] role bsn
     TournamentLeaderboard[1] role tournLeaderBoard 
-end
-
-association TGames between
-    Tournament[1] role tourn
-    Game[1..*] role games ordered
 end
 
 association TRules between
