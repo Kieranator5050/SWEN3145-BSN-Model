@@ -451,6 +451,11 @@ association Players between
     Player[*] role ssnPlayers
 end
 
+association SearchFor between
+    Player[*] role searchedPlayer
+    Player[1..*] role player
+end
+
 association Hoster between
     Host[1] role host 
     Tournament[*] role createdTournaments
