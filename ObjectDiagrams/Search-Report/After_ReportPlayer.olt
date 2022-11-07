@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="windows-1252"?><diagram_Layout version="13">
+    <diagramOptions>
+        <autolayout>false</autolayout>
+        <antialiasing>false</antialiasing>
+        <showassocnames>true</showassocnames>
+        <showattributes>true</showattributes>
+        <showmultiplicities>false</showmultiplicities>
+        <showoperations>false</showoperations>
+        <showrolenames>true</showrolenames>
+        <showgrid>false</showgrid>
+        <ShowStates>false</ShowStates>
+    </diagramOptions>
+    <node id="request" sizeCalculated="true" type="Object">
+        <name>request</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>463.2454511104387</x>
+            <y>28.29155331627149</y>
+        </strategy>
+        <hidden>false</hidden>
+    </node>
+    <node id="bssn" sizeCalculated="true" type="Object">
+        <name>bssn</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>274.80117834478085</x>
+            <y>486.2612698348238</y>
+        </strategy>
+        <hidden>false</hidden>
+    </node>
+    <node id="reqFac" sizeCalculated="true" type="Object">
+        <name>reqFac</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>10.990616074135906</x>
+            <y>57.61996325037463</y>
+        </strategy>
+        <hidden>false</hidden>
+    </node>
+    <node id="player" sizeCalculated="true" type="Object">
+        <name>player</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>46.672321955757184</x>
+            <y>370.2841035487229</y>
+        </strategy>
+        <hidden>false</hidden>
+    </node>
+    <node id="searchedPlayer" sizeCalculated="true" type="Object">
+        <name>searchedPlayer</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>487.68465803812353</x>
+            <y>367.9925098238658</y>
+        </strategy>
+        <hidden>false</hidden>
+    </node>
+    <edge type="BinaryEdge">
+        <source>bssn</source>
+        <target>player</target>
+        <name>Players</name>
+        <properties>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::source::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>bsn</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::source::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::target::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>ssnPlayers</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::target::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>*</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::AssociationName" sizeCalculated="true" type="associationName" userDefined="false" visible="true">
+                <name>Players</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <offsetX>0.0</offsetX>
+                    <offsetY>-10.0</offsetY>
+                    <related length="2">
+                        <related0>[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::0</related0>
+                        <related1>[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::1</related1>
+                    </related>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </properties>
+        <waypoints>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::0" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:player)]::WayPoint::1" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <linkValue>[Players : (bsn:bssn, ssnPlayers:player)]</linkValue>
+    </edge>
+    <edge type="BinaryEdge">
+        <source>player</source>
+        <target>reqFac</target>
+        <name>RequesterFact</name>
+        <properties>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::source::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>requester</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::source::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::target::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>reqFacts</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::target::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>*</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::AssociationName" sizeCalculated="true" type="associationName" userDefined="false" visible="true">
+                <name>RequesterFact</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <offsetX>0.0</offsetX>
+                    <offsetY>-10.0</offsetY>
+                    <related length="2">
+                        <related0>[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::0</related0>
+                        <related1>[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::1</related1>
+                    </related>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </properties>
+        <waypoints>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::0" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[RequesterFact : (reqFacts:reqFac, requester:player)]::WayPoint::1" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <linkValue>[RequesterFact : (reqFacts:reqFac, requester:player)]</linkValue>
+    </edge>
+    <edge type="BinaryEdge">
+        <source>searchedPlayer</source>
+        <target>request</target>
+        <name>Reporters</name>
+        <properties>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::source::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>reportedPlayer {redefines recipient}</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::source::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::target::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>*</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::target::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>recievedRs {redefines recievedRequests}</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::AssociationName" sizeCalculated="true" type="associationName" userDefined="false" visible="true">
+                <name>Reporters</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <offsetX>0.0</offsetX>
+                    <offsetY>-10.0</offsetY>
+                    <related length="2">
+                        <related0>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::0</related0>
+                        <related1>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::1</related1>
+                    </related>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </properties>
+        <waypoints>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::0" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]::WayPoint::1" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <linkValue>[Reporters : (recievedRs:request, reportedPlayer:searchedPlayer)]</linkValue>
+    </edge>
+    <edge type="BinaryEdge">
+        <source>searchedPlayer</source>
+        <target>player</target>
+        <name>SearchFor</name>
+        <properties>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::source::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>searchedPlayer</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::source::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>*</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::target::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>player</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::target::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1..*</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::AssociationName" sizeCalculated="true" type="associationName" userDefined="false" visible="true">
+                <name>SearchFor</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <offsetX>0.0</offsetX>
+                    <offsetY>-10.0</offsetY>
+                    <related length="2">
+                        <related0>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::0</related0>
+                        <related1>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::1</related1>
+                    </related>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </properties>
+        <waypoints>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::0" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[SearchFor : (player:player, searchedPlayer:searchedPlayer)]::WayPoint::1" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <linkValue>[SearchFor : (player:player, searchedPlayer:searchedPlayer)]</linkValue>
+    </edge>
+    <edge type="BinaryEdge">
+        <source>bssn</source>
+        <target>searchedPlayer</target>
+        <name>Players</name>
+        <properties>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::source::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::source::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>bsn</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::target::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>*</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::target::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>ssnPlayers</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::AssociationName" sizeCalculated="true" type="associationName" userDefined="false" visible="true">
+                <name>Players</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <offsetX>0.0</offsetX>
+                    <offsetY>-10.0</offsetY>
+                    <related length="2">
+                        <related0>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::0</related0>
+                        <related1>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::1</related1>
+                    </related>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </properties>
+        <waypoints>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::0" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]::WayPoint::1" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <linkValue>[Players : (bsn:bssn, ssnPlayers:searchedPlayer)]</linkValue>
+    </edge>
+    <edge type="BinaryEdge">
+        <source>reqFac</source>
+        <target>request</target>
+        <name>Requests</name>
+        <properties>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::source::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>reqFact</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::source::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::target::multiplicity" sizeCalculated="true" type="multiplicity" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::target::rolename" sizeCalculated="true" type="rolename" userDefined="false" visible="true">
+                <name>sentRequest</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <attached>[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::AssociationName" sizeCalculated="true" type="associationName" userDefined="false" visible="true">
+                <name>Requests</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <offsetX>0.0</offsetX>
+                    <offsetY>-10.0</offsetY>
+                    <related length="2">
+                        <related0>[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::0</related0>
+                        <related1>[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::1</related1>
+                    </related>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </properties>
+        <waypoints>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::0" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="[Requests : (reqFact:reqFac, sentRequest:request)]::WayPoint::1" sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <linkValue>[Requests : (reqFact:reqFac, sentRequest:request)]</linkValue>
+    </edge>
+</diagram_Layout>
