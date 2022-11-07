@@ -9,7 +9,7 @@ enum GameStatus { Starting ,Initialized, Started, Over }
 enum TournamentStatus { Open, InProgress, Closed }
 enum JoinedTStatus { Joined, Rejected, Banned, Eliminated, Left }
 enum RoundIntervalType { Minutes, Hours, Days }
-enum InviteStatus { Declined, Accepted, Invalid }
+enum InviteStatus { Unassigned, Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
 enum GamePlayer { Player1, Player2, Unassigned }
 enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
