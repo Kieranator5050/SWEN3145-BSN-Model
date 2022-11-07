@@ -7,7 +7,7 @@ enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
 enum TournamentStatus { Open, InProgress, Closed }
-enum JoinedTStatus { Joined, Rejected, Left }
+enum JoinedTStatus { Joined, Rejected, Banned, Eliminated, Left }
 enum RoundIntervalType { Minutes, Hours, Days }
 enum InviteStatus { Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
@@ -16,11 +16,11 @@ enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
 enum GameShipSizes { s1, s2, s3, s4 }
 enum PlayerStatus { InGame, LeftGame }
 enum PlayerStat { regGameWinLossRatio, tournGameWinLossRatio, friendCount }
-enum GameResult { Win, Loss, Timeout, Unassigned }
 enum RequestStatus { Sent, Recieved }
 enum ReportCriteria { Cheating, InnapropriateText }
 enum ChatroomType{ Private, Global }
-enum TournRules { minGamesToJoin, maxWinLossRatio, minWinLossRatio }
+enum TournRules { minGamesToJoin, maxWinLossRatio, minWinLossRatio, maxPlayers }
+enum GameResult {Unassigned, Won, Loss }
 
 --/*
 -- Datatype Classes
@@ -199,14 +199,15 @@ end
 class Player < SSNObserver, TObserver
 attributes
     username: String
-    playerGameSlot : GamePlayer
-    privacyPolicy: PrivacyPolicy
+    playerGameSlot : GamePlayer init: GamePlayer::Unassigned
+    privacyPolicy: PrivacyPolicy init: PrivacyPolicy::Open
+constraints
+    inv nullUsername: self.username <> null
 end
 
-class Game < GameObserver
+class Game < GameObserver, TSubject
 attributes
     status: GameStatus init: GameStatus::Starting
-    result: GameResult init: GameResult::Unassigned
     turnCount: Integer init: 0
     startedAt: DateTime
     gameTime: Integer
@@ -259,7 +260,7 @@ end
 
 class Tournament < TSubject
 attributes
-    status: TournamentStatus
+    status: TournamentStatus init: TournamentStatus::Open
     startDate: DateTime
     roundInterval: Integer init: 15
     roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
@@ -268,7 +269,7 @@ end
 class TournRule < TSubject
 attributes
     rule: TournRules
-    value: Real
+    value: Real init: 0
 end
 
 -- Add Constraints to enforce the correct points when the game starts
@@ -314,9 +315,6 @@ constraints
     --A ship can only fire on the enemy board
 end
 
-class SpecialAbilityAction < Turn
-end
-
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 -- Unextended Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
@@ -337,7 +335,7 @@ end
 class GameBoard
 attributes
     assignedPlayerUsername: String
-    assignedPlayer: GamePlayer
+    assignedPlayer: GamePlayer init: GamePlayer::Unassigned
     status: GameBoardStatus
     assignedAt: DateTime
 constraints
@@ -427,6 +425,14 @@ associationclass Accepted between
     Game[0..1] role game
 attributes
     dateAccepted: DateTime
+    gameResult: GameResult init: GameResult::Unassigned
+end
+
+associationclass TournGame between
+    Player[*] role tournPlayers
+    Game[*] role tGames
+attributes
+    gameResult: GameResult init: GameResult::Unassigned
 end
 
 associationclass Joiners between
@@ -434,7 +440,7 @@ associationclass Joiners between
     Tournament[*] role joinedTournaments
 attributes
     joinedAt: DateTime
-    status: JoinedTStatus
+    status: JoinedTStatus init: JoinedTStatus::Joined
 end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -505,11 +511,6 @@ association TournLeaderboard between
     TournamentLeaderboard[1] role tournLeaderBoard 
 end
 
-association TGames between
-    Tournament[1] role tourn
-    Game[1..*] role games ordered
-end
-
 association TRules between
     Tournament[1] role tourn
     TournRule[*] role tRules
@@ -532,7 +533,7 @@ end
 
 association BannedPlayer between
     Player[1] role bPlayer
-    Banned[1] role ban
+    Banned[*] role bans
 end
 
 association Block between
