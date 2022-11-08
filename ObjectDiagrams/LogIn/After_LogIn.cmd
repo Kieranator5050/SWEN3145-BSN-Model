@@ -9,6 +9,9 @@ reset
 !create stats0: Stat
 !create stats1: Stat
 !create stats2: Stat
+!create leaderb: RegularLeaderboard
+
+
 
 
 -- Initializing Objects 
@@ -34,3 +37,4 @@ reset
 -- Create Assocation - Players
 
 !insert (bssn,p0) into Players
+!insert (bssn,leaderb) into RegLeaderboard

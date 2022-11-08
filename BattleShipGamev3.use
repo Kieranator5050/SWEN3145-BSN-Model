@@ -453,7 +453,7 @@ end
 
 association SearchFor between
     Player[*] role searchedPlayer
-    Player[1..*] role player
+    Player[*] role player
 end
 
 association Hoster between
@@ -463,7 +463,7 @@ end
 
 association PlayerStats between
     Player[1] role player
-    Stat[1..*] role stat 
+    Stat[*] role stat 
 end
 
 association PlayerRoles between
@@ -508,12 +508,12 @@ end
 
 association RegLeaderboard between
     BattleShipSocialNetwork[1] role bsn
-    RegularLeaderboard[1] role regLeaderBoard 
+    RegularLeaderboard[*] role regLeaderBoard 
 end
 
 association TournLeaderboard between
     BattleShipSocialNetwork[1] role bsn
-    TournamentLeaderboard[1] role tournLeaderBoard 
+    TournamentLeaderboard[*] role tournLeaderBoard 
 end
 
 association TRules between

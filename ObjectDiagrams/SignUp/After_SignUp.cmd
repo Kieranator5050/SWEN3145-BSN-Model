@@ -4,6 +4,9 @@ reset
 
 !create p0: Player
 !create bssn: BattleShipSocialNetwork
+!create leaderb: RegularLeaderboard
+
+
 !create stats0: Stat
 !create stats1: Stat
 !create stats2: Stat
@@ -28,7 +31,7 @@ reset
 !insert (p0,stats0) into PlayerStats
 !insert (p0,stats1) into PlayerStats
 !insert (p0,stats2) into PlayerStats
-
+!insert (bssn,leaderb) into RegLeaderboard
 -- Create Assocation - Players
 
 !insert (bssn,p0) into Players
