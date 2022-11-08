@@ -463,7 +463,7 @@ end
 
 association PlayerStats between
     Player[1] role player
-    Stat[1..*] role stat 
+    Stat[*] role stat 
 end
 
 association PlayerRoles between
