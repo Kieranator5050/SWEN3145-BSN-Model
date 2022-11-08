@@ -501,6 +501,11 @@ association BannedTournPlayers between
     Banned[*] role TBans
 end
 
+association LeaderboardPlayers between
+    Player[*] role leaderboardPlayers ordered
+    Leaderboard[0..1] role leaderboard
+end
+
 association RegLeaderboard between
     BattleShipSocialNetwork[1] role bsn
     RegularLeaderboard[1] role regLeaderBoard 
