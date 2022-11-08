@@ -2,4 +2,5 @@
 reset
 --Create ObjectDiagrams
 
-!create p0: Player
+!create bssn: BattleShipSocialNetwork
+!create leader
