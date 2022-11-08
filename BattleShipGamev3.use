@@ -625,3 +625,8 @@ association ShipMove between
     MoveAction[*] role move
     BoardCell[2..*] role affectedCells
 end
+
+association TurnShip between
+    Turn[1] role turn
+    Ship[1] role ship 
+end
