@@ -508,12 +508,12 @@ end
 
 association RegLeaderboard between
     BattleShipSocialNetwork[1] role bsn
-    RegularLeaderboard[1] role regLeaderBoard 
+    RegularLeaderboard[*] role regLeaderBoard 
 end
 
 association TournLeaderboard between
     BattleShipSocialNetwork[1] role bsn
-    TournamentLeaderboard[0..1] role tournLeaderBoard 
+    TournamentLeaderboard[*] role tournLeaderBoard 
 end
 
 association TRules between

@@ -3,4 +3,4 @@ reset
 --Create ObjectDiagrams
 
 !create bssn: BattleShipSocialNetwork
-!create leader
+
