@@ -608,7 +608,7 @@ end
 
 association PositionedOn between
     Ship[0..1] role ship 
-    BoardCell[0..4] role shipSpace
+    BoardCell[0..*] role shipSpace
 end
 
 association Attack between
@@ -622,6 +622,6 @@ association AttackBoard between
 end
 
 association ShipMove between
-    MoveAction[1] role move
-    BoardCell[2..8] role affectedCells
+    MoveAction[*] role move
+    BoardCell[2..*] role affectedCells
 end
