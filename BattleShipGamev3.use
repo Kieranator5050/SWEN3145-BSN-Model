@@ -9,7 +9,7 @@ enum GameStatus { Starting ,Initialized, Started, Over }
 enum TournamentStatus { Open, InProgress, Closed }
 enum JoinedTStatus { Joined, Rejected, Banned, Eliminated, Left }
 enum RoundIntervalType { Minutes, Hours, Days }
-enum InviteStatus { Declined, Accepted, Invalid }
+enum InviteStatus { Unassigned, Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
 enum GamePlayer { Player1, Player2, Unassigned }
 enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
@@ -501,6 +501,11 @@ association BannedTournPlayers between
     Banned[*] role TBans
 end
 
+association LeaderboardPlayers between
+    Player[*] role leaderboardPlayers ordered
+    Leaderboard[0..1] role leaderboard
+end
+
 association RegLeaderboard between
     BattleShipSocialNetwork[1] role bsn
     RegularLeaderboard[1] role regLeaderBoard 
@@ -603,7 +608,7 @@ end
 
 association PositionedOn between
     Ship[0..1] role ship 
-    BoardCell[0..4] role shipSpace
+    BoardCell[0..*] role shipSpace
 end
 
 association Attack between
@@ -617,6 +622,11 @@ association AttackBoard between
 end
 
 association ShipMove between
-    MoveAction[1] role move
-    BoardCell[2..8] role affectedCells
+    MoveAction[*] role move
+    BoardCell[2..*] role affectedCells
+end
+
+association TurnShip between
+    Turn[1] role turn
+    Ship[1] role ship 
 end
