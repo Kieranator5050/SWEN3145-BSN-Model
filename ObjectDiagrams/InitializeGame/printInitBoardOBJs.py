@@ -13,31 +13,24 @@ if __name__ == '__main__':
     lines = [d+l for l in lines.split('!') if l]
 
     YAxis  = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' ]
-    XAxis = [ 'y1', 'y2', 'y3', 'y4', 'y5', 'y6', 'y7', 'y8', 'y9', 'y10' ]
+    XAxis = [ 'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10' ]
     players = ['a','b']
     playerEnum = { 'a': 'GamePlayer::Player1', 'b': 'GamePlayer::Player2'}
     shipNameDict = { 4 : 'pb', 3: 'dd', 2: 'cl', 1: 'bb' }
     shipTypeDict = { 4 : 'PatrolBoat', 3: 'Destroyer', 2: 'Cruiser', 1: 'Battleship' }
 
-    """Initialize Ships"""
-    for p in players:
-        i = 4
-        while i > 0:
-            for j in range(1,i+1):
-                number = lambda n,t: " " if n==1 and t=='Battleship' else n
-                ship = f'{shipNameDict[i]}{p}{number(j,shipTypeDict[i])}'
-                lines.append(f'!create {ship}: {shipTypeDict[i]}')
-                lines.append(f'!insert (g1, {ship}) into GameShips')
-            i-=1
-
-
     """Initialize Cells"""
+    p1cells = []
+    p2cells = []
     for p in players:
         i = 1
-        for y in YAxis:
-            for x in XAxis:
+        for x in XAxis:
+            for y in YAxis:
 
                 cell = f'c{p}{i}'
+                addCell = lambda c,p: p1cells.append((c,p)) if p[0]=='a' else p2cells.append((c,p))
+                addCell(cell,(p,x,y))
+
                 lines.append(f'!create {cell} : BoardCell')
                 lines.append(f'!set {cell}.xCoord := XAxis::{x}')
                 lines.append(f'!set {cell}.yCoord := YAxis::{y}')
@@ -49,6 +42,41 @@ if __name__ == '__main__':
                 lines.append(f'!insert ({board(p)}, {cell}) into GameCells')
 
                 i+=1
+
+    #print(p1cells)
+    #print(p2cells)
+    print(p1cells[0],p1cells[10])
+
+    startPos = {1:0, 2:1, 3:3, 4:6}
+
+    """Initialize Ships"""
+    for p in players:
+        i = 4
+        size = 1
+
+        while i > 0:
+
+            startIndx = startPos[size]
+            
+            z = 0
+            for j in range(1,i+1):
+                number = lambda n,t: " " if n==1 and t=='Battleship' else n
+                ship = f'{shipNameDict[i]}{p}{number(j,shipTypeDict[i])}'
+                lines.append(f'!create {ship}: {shipTypeDict[i]}')
+                lines.append(f'!insert (g1, {ship}) into GameShips')
+                
+                getCells = lambda p : p1cells if p=='a' else p2cells
+                cells = getCells(p)
+                
+                for k in range(0, size):
+                    cell = cells[startIndx+k]
+                    lines.append(f'!insert ({ship}, {cell[0]}) into PositionedOn')
+                    print(ship)
+                startIndx += 10
+            z+=1
+            i-=1
+            size+=1
+            
 
     """Printing lines to the cmd"""
     file = open('After_InitializeGame.cmd', 'w')

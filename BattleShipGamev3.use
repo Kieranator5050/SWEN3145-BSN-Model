@@ -4,7 +4,7 @@ model BattleShipGame
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 enum PrivacyPolicy { Closed, FriendsOnly, Open, Unassigned }
 enum YAxis { A, B, C, D, E, F, G, H, I, J }
-enum XAxis { y1, y2, y3, y4, y5, y6, y7, y8, y9, y10 }
+enum XAxis { x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 }
 enum GameStatus { Starting ,Initialized, Started, Over }
 enum TournamentStatus { Open, InProgress, Closed }
 enum JoinedTStatus { Joined, Rejected, Banned, Eliminated, Left }
@@ -356,7 +356,7 @@ constraints
     inv validShipPlacement:
     let 
         y = OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J},
-        x = OrderedSet{XAxis::y1, XAxis::y2, XAxis::y3, XAxis::y4, XAxis::y5, XAxis::y6, XAxis::y7, XAxis::y8, XAxis::y9, XAxis::y10}
+        x = OrderedSet{XAxis::x1, XAxis::x2, XAxis::x3, XAxis::x4, XAxis::x5, XAxis::x6, XAxis::x7, XAxis::x8, XAxis::x9, XAxis::x10}
     in 
     ((status=GameBoardStatus::Assigned 
     and 
