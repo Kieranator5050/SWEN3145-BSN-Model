@@ -169,7 +169,10 @@ attributes
     actionPoints: Integer init : 0
     size: GameShipSizes
     classification: GameShip --A player has individual classifications
-    isOnTheBoard: Boolean
+    isOnTheBoard: Boolean init: true
+constraints
+    inv onBoard: self.healthPoints > 0 implies self.isOnTheBoard = true 
+    		and self.healthPoints < 0 implies self.isOnTheBoard = false
 end
 
 abstract class MoveAction < Turn
@@ -177,6 +180,8 @@ attributes
     isValid: Boolean
 constraints
     --A ship cannot move into another ship
+    inv spaceUnoccupied: 
+        self.affectedCells->forAll(c|c.isOccupied=false)
 
     --A ship can move 1 cell up, 1 cell down or transform to the left or right
 
