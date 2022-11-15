@@ -30,12 +30,12 @@
 !create b1: GameBoard 
 !set b1.assignedPlayerUsername := 'KieranJag' 
 !set b1.assignedPlayer := GamePlayer::Player1 
-!set b1.status := Assigned 
+!set b1.status := GameBoardStatus::Assigned 
 !set b1.assignedAt := d2 
 !create b2: GameBoard 
 !set b2.assignedPlayerUsername := 'MariaM' 
 !set b2.assignedPlayer := GamePlayer::Player2 
-!set b2.status := Assigned 
+!set b2.status := GameBoardStatus::Assigned 
 !set b2.assignedAt := d2 
 !insert(bsn, p1) into Players 
 !insert(bsn, p2) into Players 
@@ -1449,80 +1449,120 @@
 !create pba1: PatrolBoat
 !insert (g1, pba1) into GameShips
 !insert (pba1, ca1) into PositionedOn
+!set ca1.isOccupied := true
 !create pba2: PatrolBoat
 !insert (g1, pba2) into GameShips
 !insert (pba2, ca11) into PositionedOn
+!set ca11.isOccupied := true
 !create pba3: PatrolBoat
 !insert (g1, pba3) into GameShips
 !insert (pba3, ca21) into PositionedOn
+!set ca21.isOccupied := true
 !create pba4: PatrolBoat
 !insert (g1, pba4) into GameShips
 !insert (pba4, ca31) into PositionedOn
+!set ca31.isOccupied := true
 !create dda1: Destroyer
 !insert (g1, dda1) into GameShips
 !insert (dda1, ca2) into PositionedOn
+!set ca2.isOccupied := true
 !insert (dda1, ca3) into PositionedOn
+!set ca3.isOccupied := true
 !create dda2: Destroyer
 !insert (g1, dda2) into GameShips
 !insert (dda2, ca12) into PositionedOn
+!set ca12.isOccupied := true
 !insert (dda2, ca13) into PositionedOn
+!set ca13.isOccupied := true
 !create dda3: Destroyer
 !insert (g1, dda3) into GameShips
 !insert (dda3, ca22) into PositionedOn
+!set ca22.isOccupied := true
 !insert (dda3, ca23) into PositionedOn
+!set ca23.isOccupied := true
 !create cla1: Cruiser
 !insert (g1, cla1) into GameShips
 !insert (cla1, ca4) into PositionedOn
+!set ca4.isOccupied := true
 !insert (cla1, ca5) into PositionedOn
+!set ca5.isOccupied := true
 !insert (cla1, ca6) into PositionedOn
+!set ca6.isOccupied := true
 !create cla2: Cruiser
 !insert (g1, cla2) into GameShips
 !insert (cla2, ca14) into PositionedOn
+!set ca14.isOccupied := true
 !insert (cla2, ca15) into PositionedOn
+!set ca15.isOccupied := true
 !insert (cla2, ca16) into PositionedOn
+!set ca16.isOccupied := true
 !create bba : Battleship
 !insert (g1, bba ) into GameShips
 !insert (bba , ca7) into PositionedOn
+!set ca7.isOccupied := true
 !insert (bba , ca8) into PositionedOn
+!set ca8.isOccupied := true
 !insert (bba , ca9) into PositionedOn
+!set ca9.isOccupied := true
 !insert (bba , ca10) into PositionedOn
+!set ca10.isOccupied := true
 !create pbb1: PatrolBoat
 !insert (g1, pbb1) into GameShips
 !insert (pbb1, cb1) into PositionedOn
+!set cb1.isOccupied := true
 !create pbb2: PatrolBoat
 !insert (g1, pbb2) into GameShips
 !insert (pbb2, cb11) into PositionedOn
+!set cb11.isOccupied := true
 !create pbb3: PatrolBoat
 !insert (g1, pbb3) into GameShips
 !insert (pbb3, cb21) into PositionedOn
+!set cb21.isOccupied := true
 !create pbb4: PatrolBoat
 !insert (g1, pbb4) into GameShips
 !insert (pbb4, cb31) into PositionedOn
+!set cb31.isOccupied := true
 !create ddb1: Destroyer
 !insert (g1, ddb1) into GameShips
 !insert (ddb1, cb2) into PositionedOn
+!set cb2.isOccupied := true
 !insert (ddb1, cb3) into PositionedOn
+!set cb3.isOccupied := true
 !create ddb2: Destroyer
 !insert (g1, ddb2) into GameShips
 !insert (ddb2, cb12) into PositionedOn
+!set cb12.isOccupied := true
 !insert (ddb2, cb13) into PositionedOn
+!set cb13.isOccupied := true
 !create ddb3: Destroyer
 !insert (g1, ddb3) into GameShips
 !insert (ddb3, cb22) into PositionedOn
+!set cb22.isOccupied := true
 !insert (ddb3, cb23) into PositionedOn
+!set cb23.isOccupied := true
 !create clb1: Cruiser
 !insert (g1, clb1) into GameShips
 !insert (clb1, cb4) into PositionedOn
+!set cb4.isOccupied := true
 !insert (clb1, cb5) into PositionedOn
+!set cb5.isOccupied := true
 !insert (clb1, cb6) into PositionedOn
+!set cb6.isOccupied := true
 !create clb2: Cruiser
 !insert (g1, clb2) into GameShips
 !insert (clb2, cb14) into PositionedOn
+!set cb14.isOccupied := true
 !insert (clb2, cb15) into PositionedOn
+!set cb15.isOccupied := true
 !insert (clb2, cb16) into PositionedOn
+!set cb16.isOccupied := true
 !create bbb : Battleship
 !insert (g1, bbb ) into GameShips
 !insert (bbb , cb7) into PositionedOn
+!set cb7.isOccupied := true
 !insert (bbb , cb8) into PositionedOn
+!set cb8.isOccupied := true
 !insert (bbb , cb9) into PositionedOn
+!set cb9.isOccupied := true
 !insert (bbb , cb10) into PositionedOn
+!set cb10.isOccupied := true
