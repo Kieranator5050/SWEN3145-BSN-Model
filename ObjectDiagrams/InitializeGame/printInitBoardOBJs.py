@@ -18,6 +18,9 @@ if __name__ == '__main__':
     playerEnum = { 'a': 'GamePlayer::Player1', 'b': 'GamePlayer::Player2'}
     shipNameDict = { 4 : 'pb', 3: 'dd', 2: 'cl', 1: 'bb' }
     shipTypeDict = { 4 : 'PatrolBoat', 3: 'Destroyer', 2: 'Cruiser', 1: 'Battleship' }
+    shipHPDP = { 1 : 4, 2: 3, 3: 2, 4: 1 }
+    shipAP = { 1 : 1, 2: 2, 3: 3, 4: 4 }
+    shipSize = { 1 : 's4', 2: 's3', 3: 's2', 4: 's1' }
 
     """Initialize Cells"""
     p1cells = []
@@ -67,6 +70,10 @@ if __name__ == '__main__':
                 shipClass = ''.join(shipClass)
                 lines.append(f'!set {ship}.classification := GameShip::{shipClass}')
                 lines.append(f'!set {ship}.assignedPlayer := {playerEnum[p]}')
+                lines.append(f'!set {ship}.size := GameShipSizes::{shipSize[i]}')
+                lines.append(f'!set {ship}.healthPoints := {shipHPDP[i]}')
+                lines.append(f'!set {ship}.damagePoints := {shipHPDP[i]}')
+                lines.append(f'!set {ship}.actionPoints := {shipAP[i]}')
                 lines.append(f'!insert (g1, {ship}) into GameShips')
                 
                 getCells = lambda p : p1cells if p=='a' else p2cells

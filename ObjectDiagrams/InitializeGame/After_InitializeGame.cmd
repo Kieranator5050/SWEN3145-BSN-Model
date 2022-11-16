@@ -1449,30 +1449,50 @@
 !create pba1: PatrolBoat
 !set pba1.classification := GameShip::pb1
 !set pba1.assignedPlayer := GamePlayer::Player1
+!set pba1.size := GameShipSizes::s1
+!set pba1.healthPoints := 1
+!set pba1.damagePoints := 1
+!set pba1.actionPoints := 4
 !insert (g1, pba1) into GameShips
 !insert (pba1, ca1) into PositionedOn
 !set ca1.isOccupied := true
 !create pba2: PatrolBoat
 !set pba2.classification := GameShip::pb2
 !set pba2.assignedPlayer := GamePlayer::Player1
+!set pba2.size := GameShipSizes::s1
+!set pba2.healthPoints := 1
+!set pba2.damagePoints := 1
+!set pba2.actionPoints := 4
 !insert (g1, pba2) into GameShips
 !insert (pba2, ca11) into PositionedOn
 !set ca11.isOccupied := true
 !create pba3: PatrolBoat
 !set pba3.classification := GameShip::pb3
 !set pba3.assignedPlayer := GamePlayer::Player1
+!set pba3.size := GameShipSizes::s1
+!set pba3.healthPoints := 1
+!set pba3.damagePoints := 1
+!set pba3.actionPoints := 4
 !insert (g1, pba3) into GameShips
 !insert (pba3, ca21) into PositionedOn
 !set ca21.isOccupied := true
 !create pba4: PatrolBoat
 !set pba4.classification := GameShip::pb4
 !set pba4.assignedPlayer := GamePlayer::Player1
+!set pba4.size := GameShipSizes::s1
+!set pba4.healthPoints := 1
+!set pba4.damagePoints := 1
+!set pba4.actionPoints := 4
 !insert (g1, pba4) into GameShips
 !insert (pba4, ca31) into PositionedOn
 !set ca31.isOccupied := true
 !create dda1: Destroyer
 !set dda1.classification := GameShip::dd1
 !set dda1.assignedPlayer := GamePlayer::Player1
+!set dda1.size := GameShipSizes::s2
+!set dda1.healthPoints := 2
+!set dda1.damagePoints := 2
+!set dda1.actionPoints := 3
 !insert (g1, dda1) into GameShips
 !insert (dda1, ca2) into PositionedOn
 !set ca2.isOccupied := true
@@ -1481,6 +1501,10 @@
 !create dda2: Destroyer
 !set dda2.classification := GameShip::dd2
 !set dda2.assignedPlayer := GamePlayer::Player1
+!set dda2.size := GameShipSizes::s2
+!set dda2.healthPoints := 2
+!set dda2.damagePoints := 2
+!set dda2.actionPoints := 3
 !insert (g1, dda2) into GameShips
 !insert (dda2, ca12) into PositionedOn
 !set ca12.isOccupied := true
@@ -1489,6 +1513,10 @@
 !create dda3: Destroyer
 !set dda3.classification := GameShip::dd3
 !set dda3.assignedPlayer := GamePlayer::Player1
+!set dda3.size := GameShipSizes::s2
+!set dda3.healthPoints := 2
+!set dda3.damagePoints := 2
+!set dda3.actionPoints := 3
 !insert (g1, dda3) into GameShips
 !insert (dda3, ca22) into PositionedOn
 !set ca22.isOccupied := true
@@ -1497,6 +1525,10 @@
 !create cla1: Cruiser
 !set cla1.classification := GameShip::cl1
 !set cla1.assignedPlayer := GamePlayer::Player1
+!set cla1.size := GameShipSizes::s3
+!set cla1.healthPoints := 3
+!set cla1.damagePoints := 3
+!set cla1.actionPoints := 2
 !insert (g1, cla1) into GameShips
 !insert (cla1, ca4) into PositionedOn
 !set ca4.isOccupied := true
@@ -1507,6 +1539,10 @@
 !create cla2: Cruiser
 !set cla2.classification := GameShip::cl2
 !set cla2.assignedPlayer := GamePlayer::Player1
+!set cla2.size := GameShipSizes::s3
+!set cla2.healthPoints := 3
+!set cla2.damagePoints := 3
+!set cla2.actionPoints := 2
 !insert (g1, cla2) into GameShips
 !insert (cla2, ca14) into PositionedOn
 !set ca14.isOccupied := true
@@ -1517,6 +1553,10 @@
 !create bba: Battleship
 !set bba.classification := GameShip::bb
 !set bba.assignedPlayer := GamePlayer::Player1
+!set bba.size := GameShipSizes::s4
+!set bba.healthPoints := 4
+!set bba.damagePoints := 4
+!set bba.actionPoints := 1
 !insert (g1, bba) into GameShips
 !insert (bba, ca7) into PositionedOn
 !set ca7.isOccupied := true
@@ -1529,30 +1569,50 @@
 !create pbb1: PatrolBoat
 !set pbb1.classification := GameShip::pb1
 !set pbb1.assignedPlayer := GamePlayer::Player2
+!set pbb1.size := GameShipSizes::s1
+!set pbb1.healthPoints := 1
+!set pbb1.damagePoints := 1
+!set pbb1.actionPoints := 4
 !insert (g1, pbb1) into GameShips
 !insert (pbb1, cb1) into PositionedOn
 !set cb1.isOccupied := true
 !create pbb2: PatrolBoat
 !set pbb2.classification := GameShip::pb2
 !set pbb2.assignedPlayer := GamePlayer::Player2
+!set pbb2.size := GameShipSizes::s1
+!set pbb2.healthPoints := 1
+!set pbb2.damagePoints := 1
+!set pbb2.actionPoints := 4
 !insert (g1, pbb2) into GameShips
 !insert (pbb2, cb11) into PositionedOn
 !set cb11.isOccupied := true
 !create pbb3: PatrolBoat
 !set pbb3.classification := GameShip::pb3
 !set pbb3.assignedPlayer := GamePlayer::Player2
+!set pbb3.size := GameShipSizes::s1
+!set pbb3.healthPoints := 1
+!set pbb3.damagePoints := 1
+!set pbb3.actionPoints := 4
 !insert (g1, pbb3) into GameShips
 !insert (pbb3, cb21) into PositionedOn
 !set cb21.isOccupied := true
 !create pbb4: PatrolBoat
 !set pbb4.classification := GameShip::pb4
 !set pbb4.assignedPlayer := GamePlayer::Player2
+!set pbb4.size := GameShipSizes::s1
+!set pbb4.healthPoints := 1
+!set pbb4.damagePoints := 1
+!set pbb4.actionPoints := 4
 !insert (g1, pbb4) into GameShips
 !insert (pbb4, cb31) into PositionedOn
 !set cb31.isOccupied := true
 !create ddb1: Destroyer
 !set ddb1.classification := GameShip::dd1
 !set ddb1.assignedPlayer := GamePlayer::Player2
+!set ddb1.size := GameShipSizes::s2
+!set ddb1.healthPoints := 2
+!set ddb1.damagePoints := 2
+!set ddb1.actionPoints := 3
 !insert (g1, ddb1) into GameShips
 !insert (ddb1, cb2) into PositionedOn
 !set cb2.isOccupied := true
@@ -1561,6 +1621,10 @@
 !create ddb2: Destroyer
 !set ddb2.classification := GameShip::dd2
 !set ddb2.assignedPlayer := GamePlayer::Player2
+!set ddb2.size := GameShipSizes::s2
+!set ddb2.healthPoints := 2
+!set ddb2.damagePoints := 2
+!set ddb2.actionPoints := 3
 !insert (g1, ddb2) into GameShips
 !insert (ddb2, cb12) into PositionedOn
 !set cb12.isOccupied := true
@@ -1569,6 +1633,10 @@
 !create ddb3: Destroyer
 !set ddb3.classification := GameShip::dd3
 !set ddb3.assignedPlayer := GamePlayer::Player2
+!set ddb3.size := GameShipSizes::s2
+!set ddb3.healthPoints := 2
+!set ddb3.damagePoints := 2
+!set ddb3.actionPoints := 3
 !insert (g1, ddb3) into GameShips
 !insert (ddb3, cb22) into PositionedOn
 !set cb22.isOccupied := true
@@ -1577,6 +1645,10 @@
 !create clb1: Cruiser
 !set clb1.classification := GameShip::cl1
 !set clb1.assignedPlayer := GamePlayer::Player2
+!set clb1.size := GameShipSizes::s3
+!set clb1.healthPoints := 3
+!set clb1.damagePoints := 3
+!set clb1.actionPoints := 2
 !insert (g1, clb1) into GameShips
 !insert (clb1, cb4) into PositionedOn
 !set cb4.isOccupied := true
@@ -1587,6 +1659,10 @@
 !create clb2: Cruiser
 !set clb2.classification := GameShip::cl2
 !set clb2.assignedPlayer := GamePlayer::Player2
+!set clb2.size := GameShipSizes::s3
+!set clb2.healthPoints := 3
+!set clb2.damagePoints := 3
+!set clb2.actionPoints := 2
 !insert (g1, clb2) into GameShips
 !insert (clb2, cb14) into PositionedOn
 !set cb14.isOccupied := true
@@ -1597,6 +1673,10 @@
 !create bbb: Battleship
 !set bbb.classification := GameShip::bb
 !set bbb.assignedPlayer := GamePlayer::Player2
+!set bbb.size := GameShipSizes::s4
+!set bbb.healthPoints := 4
+!set bbb.damagePoints := 4
+!set bbb.actionPoints := 1
 !insert (g1, bbb) into GameShips
 !insert (bbb, cb7) into PositionedOn
 !set cb7.isOccupied := true

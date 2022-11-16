@@ -280,15 +280,35 @@ end
 -- Add Constraints to enforce the correct points when the game starts
 -- Add Constraints to enforce a valid amount of points during the game
 class PatrolBoat < Ship
+constraints
+    inv pbHP: self.healthPoints<>null implies self.healthPoints<=1
+    inv pbDP: self.damagePoints<>null implies self.damagePoints=1
+    inv pbAP: self.actionPoints<>null implies self.actionPoints<=4
+    inv pbSize: self.size<>null implies self.size=GameShipSizes::s1
 end
 
 class Destroyer < Ship
+constraints
+    inv ddHP: self.healthPoints<>null implies self.healthPoints<=2
+    inv ddDP: self.damagePoints<>null implies self.damagePoints=2
+    inv ddAP: self.actionPoints<>null implies self.actionPoints<=3
+    inv ddSize: self.size<>null implies self.size=GameShipSizes::s2
 end
 
 class Cruiser < Ship
+constraints
+    inv clHP: self.healthPoints<>null implies self.healthPoints<=3
+    inv clDP: self.damagePoints<>null implies self.damagePoints=3
+    inv clAP: self.actionPoints<>null implies self.actionPoints<=2
+    inv clSize: self.size<>null implies self.size=GameShipSizes::s3
 end
 
 class Battleship < Ship
+constraints
+    inv bbHP: self.healthPoints<>null implies self.healthPoints<=4
+    inv bbDP: self.damagePoints<>null implies self.damagePoints=4
+    inv bbAP: self.actionPoints<>null implies self.actionPoints<=1
+    inv bbSize: self.size<>null implies self.size=GameShipSizes::s4
 end
 
 class MoveUp < MoveAction
