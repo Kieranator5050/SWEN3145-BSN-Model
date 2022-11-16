@@ -1447,31 +1447,31 @@
 !set cb100.isHiddenTo := GamePlayer::Player1
 !insert (b2, cb100) into GameCells
 !create pba1: PatrolBoat
-!set pba1.classificaton := GameShip::pb1
+!set pba1.classification := GameShip::pb1
 !set pba1.assignedPlayer := GamePlayer::Player1
 !insert (g1, pba1) into GameShips
 !insert (pba1, ca1) into PositionedOn
 !set ca1.isOccupied := true
 !create pba2: PatrolBoat
-!set pba2.classificaton := GameShip::pb2
+!set pba2.classification := GameShip::pb2
 !set pba2.assignedPlayer := GamePlayer::Player1
 !insert (g1, pba2) into GameShips
 !insert (pba2, ca11) into PositionedOn
 !set ca11.isOccupied := true
 !create pba3: PatrolBoat
-!set pba3.classificaton := GameShip::pb3
+!set pba3.classification := GameShip::pb3
 !set pba3.assignedPlayer := GamePlayer::Player1
 !insert (g1, pba3) into GameShips
 !insert (pba3, ca21) into PositionedOn
 !set ca21.isOccupied := true
 !create pba4: PatrolBoat
-!set pba4.classificaton := GameShip::pb4
+!set pba4.classification := GameShip::pb4
 !set pba4.assignedPlayer := GamePlayer::Player1
 !insert (g1, pba4) into GameShips
 !insert (pba4, ca31) into PositionedOn
 !set ca31.isOccupied := true
 !create dda1: Destroyer
-!set dda1.classificaton := GameShip::dd1
+!set dda1.classification := GameShip::dd1
 !set dda1.assignedPlayer := GamePlayer::Player1
 !insert (g1, dda1) into GameShips
 !insert (dda1, ca2) into PositionedOn
@@ -1479,7 +1479,7 @@
 !insert (dda1, ca3) into PositionedOn
 !set ca3.isOccupied := true
 !create dda2: Destroyer
-!set dda2.classificaton := GameShip::dd2
+!set dda2.classification := GameShip::dd2
 !set dda2.assignedPlayer := GamePlayer::Player1
 !insert (g1, dda2) into GameShips
 !insert (dda2, ca12) into PositionedOn
@@ -1487,7 +1487,7 @@
 !insert (dda2, ca13) into PositionedOn
 !set ca13.isOccupied := true
 !create dda3: Destroyer
-!set dda3.classificaton := GameShip::dd3
+!set dda3.classification := GameShip::dd3
 !set dda3.assignedPlayer := GamePlayer::Player1
 !insert (g1, dda3) into GameShips
 !insert (dda3, ca22) into PositionedOn
@@ -1495,7 +1495,7 @@
 !insert (dda3, ca23) into PositionedOn
 !set ca23.isOccupied := true
 !create cla1: Cruiser
-!set cla1.classificaton := GameShip::cl1
+!set cla1.classification := GameShip::cl1
 !set cla1.assignedPlayer := GamePlayer::Player1
 !insert (g1, cla1) into GameShips
 !insert (cla1, ca4) into PositionedOn
@@ -1505,7 +1505,7 @@
 !insert (cla1, ca6) into PositionedOn
 !set ca6.isOccupied := true
 !create cla2: Cruiser
-!set cla2.classificaton := GameShip::cl2
+!set cla2.classification := GameShip::cl2
 !set cla2.assignedPlayer := GamePlayer::Player1
 !insert (g1, cla2) into GameShips
 !insert (cla2, ca14) into PositionedOn
@@ -1515,7 +1515,7 @@
 !insert (cla2, ca16) into PositionedOn
 !set ca16.isOccupied := true
 !create bba: Battleship
-!set bba.classificaton := GameShip::bb
+!set bba.classification := GameShip::bb
 !set bba.assignedPlayer := GamePlayer::Player1
 !insert (g1, bba) into GameShips
 !insert (bba, ca7) into PositionedOn
@@ -1527,31 +1527,31 @@
 !insert (bba, ca10) into PositionedOn
 !set ca10.isOccupied := true
 !create pbb1: PatrolBoat
-!set pbb1.classificaton := GameShip::pb1
+!set pbb1.classification := GameShip::pb1
 !set pbb1.assignedPlayer := GamePlayer::Player2
 !insert (g1, pbb1) into GameShips
 !insert (pbb1, cb1) into PositionedOn
 !set cb1.isOccupied := true
 !create pbb2: PatrolBoat
-!set pbb2.classificaton := GameShip::pb2
+!set pbb2.classification := GameShip::pb2
 !set pbb2.assignedPlayer := GamePlayer::Player2
 !insert (g1, pbb2) into GameShips
 !insert (pbb2, cb11) into PositionedOn
 !set cb11.isOccupied := true
 !create pbb3: PatrolBoat
-!set pbb3.classificaton := GameShip::pb3
+!set pbb3.classification := GameShip::pb3
 !set pbb3.assignedPlayer := GamePlayer::Player2
 !insert (g1, pbb3) into GameShips
 !insert (pbb3, cb21) into PositionedOn
 !set cb21.isOccupied := true
 !create pbb4: PatrolBoat
-!set pbb4.classificaton := GameShip::pb4
+!set pbb4.classification := GameShip::pb4
 !set pbb4.assignedPlayer := GamePlayer::Player2
 !insert (g1, pbb4) into GameShips
 !insert (pbb4, cb31) into PositionedOn
 !set cb31.isOccupied := true
 !create ddb1: Destroyer
-!set ddb1.classificaton := GameShip::dd1
+!set ddb1.classification := GameShip::dd1
 !set ddb1.assignedPlayer := GamePlayer::Player2
 !insert (g1, ddb1) into GameShips
 !insert (ddb1, cb2) into PositionedOn
@@ -1559,7 +1559,7 @@
 !insert (ddb1, cb3) into PositionedOn
 !set cb3.isOccupied := true
 !create ddb2: Destroyer
-!set ddb2.classificaton := GameShip::dd2
+!set ddb2.classification := GameShip::dd2
 !set ddb2.assignedPlayer := GamePlayer::Player2
 !insert (g1, ddb2) into GameShips
 !insert (ddb2, cb12) into PositionedOn
@@ -1567,7 +1567,7 @@
 !insert (ddb2, cb13) into PositionedOn
 !set cb13.isOccupied := true
 !create ddb3: Destroyer
-!set ddb3.classificaton := GameShip::dd3
+!set ddb3.classification := GameShip::dd3
 !set ddb3.assignedPlayer := GamePlayer::Player2
 !insert (g1, ddb3) into GameShips
 !insert (ddb3, cb22) into PositionedOn
@@ -1575,7 +1575,7 @@
 !insert (ddb3, cb23) into PositionedOn
 !set cb23.isOccupied := true
 !create clb1: Cruiser
-!set clb1.classificaton := GameShip::cl1
+!set clb1.classification := GameShip::cl1
 !set clb1.assignedPlayer := GamePlayer::Player2
 !insert (g1, clb1) into GameShips
 !insert (clb1, cb4) into PositionedOn
@@ -1585,7 +1585,7 @@
 !insert (clb1, cb6) into PositionedOn
 !set cb6.isOccupied := true
 !create clb2: Cruiser
-!set clb2.classificaton := GameShip::cl2
+!set clb2.classification := GameShip::cl2
 !set clb2.assignedPlayer := GamePlayer::Player2
 !insert (g1, clb2) into GameShips
 !insert (clb2, cb14) into PositionedOn
@@ -1595,7 +1595,7 @@
 !insert (clb2, cb16) into PositionedOn
 !set cb16.isOccupied := true
 !create bbb: Battleship
-!set bbb.classificaton := GameShip::bb
+!set bbb.classification := GameShip::bb
 !set bbb.assignedPlayer := GamePlayer::Player2
 !insert (g1, bbb) into GameShips
 !insert (bbb, cb7) into PositionedOn

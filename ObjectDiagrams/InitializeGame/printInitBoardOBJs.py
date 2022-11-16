@@ -76,7 +76,7 @@ if __name__ == '__main__':
                     cell = cells[startIndx+k]
                     lines.append(f'!insert ({ship}, {cell[0]}) into PositionedOn')
                     lines.append(f'!set {cell[0]}.isOccupied := true')
-                    #print(ship)
+                    print(ship, cell)
                 startIndx += 10
             i-=1
             size+=1

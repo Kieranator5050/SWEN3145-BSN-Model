@@ -363,26 +363,11 @@ constraints
     game.status=GameStatus::Initialized or game.status=GameStatus::Started))
         implies
             game.ships->forAll(s|
-                            s.shipSpace->forAll(ss1, ss2|
-                                x->indexOf(ss1.xCoord)=x->indexOf(ss2.xCoord) 
-                                and
-                                    (y->indexOf(ss1.yCoord)+1 = y->indexOf(ss2.yCoord)
-                                    or
-                                    y->indexOf(ss1.yCoord)+2 = y->indexOf(ss2.yCoord)
-                                    or
-                                    y->indexOf(ss1.yCoord)+3 = y->indexOf(ss2.yCoord)
-                                    or 
-                                    y->indexOf(ss1.yCoord)+4 = y->indexOf(ss2.yCoord)
-                                    or
-                                    y->indexOf(ss1.yCoord)-1 = y->indexOf(ss2.yCoord)
-                                    or
-                                    y->indexOf(ss1.yCoord)-2 = y->indexOf(ss2.yCoord)
-                                    or
-                                    y->indexOf(ss1.yCoord)-3 = y->indexOf(ss2.yCoord)
-                                    or 
-                                    y->indexOf(ss1.yCoord)-4 = y->indexOf(ss2.yCoord)
-                                    )
-                                )) 
+                                s.shipSpace->forAll(ss1, ss2|
+                                x->indexOf(ss1.xCoord)=x->indexOf(ss2.xCoord)  
+                                )
+                                and s.shipSpace->size()<=4
+                            )
 
 
 end
