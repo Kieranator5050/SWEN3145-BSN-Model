@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     #print(p1cells)
     #print(p2cells)
-    print(p1cells[0],p1cells[10])
+    #print(p1cells[0],p1cells[10])
 
     startPos = {1:0, 2:1, 3:3, 4:6}
 
@@ -59,9 +59,14 @@ if __name__ == '__main__':
             startIndx = startPos[size]
             
             for j in range(1,i+1):
-                number = lambda n,t: " " if n==1 and t=='Battleship' else n
+                number = lambda n,t: "" if n==1 and t=='Battleship' else n
                 ship = f'{shipNameDict[i]}{p}{number(j,shipTypeDict[i])}'
                 lines.append(f'!create {ship}: {shipTypeDict[i]}')
+                shipClass = list(ship)
+                shipClass.pop(2)
+                shipClass = ''.join(shipClass)
+                lines.append(f'!set {ship}.classification := GameShip::{shipClass}')
+                lines.append(f'!set {ship}.assignedPlayer := {playerEnum[p]}')
                 lines.append(f'!insert (g1, {ship}) into GameShips')
                 
                 getCells = lambda p : p1cells if p=='a' else p2cells
@@ -71,7 +76,7 @@ if __name__ == '__main__':
                     cell = cells[startIndx+k]
                     lines.append(f'!insert ({ship}, {cell[0]}) into PositionedOn')
                     lines.append(f'!set {cell[0]}.isOccupied := true')
-                    print(ship)
+                    #print(ship)
                 startIndx += 10
             i-=1
             size+=1

@@ -12,7 +12,7 @@ enum RoundIntervalType { Minutes, Hours, Days }
 enum InviteStatus { Unassigned, Declined, Accepted, Invalid }
 enum GameBoardStatus { Unassigned, Assigned }
 enum GamePlayer { Player1, Player2, Unassigned }
-enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb1 }
+enum GameShip { pb1, pb2, pb3, pb4, dd1, dd2, dd3, cl1, cl2, bb }
 enum GameShipSizes { s1, s2, s3, s4 }
 enum PlayerStatus { InGame, LeftGame }
 enum PlayerStat { regGameWinLossRatio, tournGameWinLossRatio, friendCount }
