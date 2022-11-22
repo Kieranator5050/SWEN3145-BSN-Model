@@ -208,6 +208,9 @@ attributes
     privacyPolicy: PrivacyPolicy init: PrivacyPolicy::Open
 constraints
     inv nullUsername: self.username <> null
+    inv noSelfReports: recievedRs.recipient->forAll(r|r<>self)
+    inv noSelfRequests: reqFacts.sentRequest->asSet().recipient->forAll(r|r<>self)
+    inv noSelfBlock: block->forAll(p|p.blockedPlayer<>self)
 end
 
 class Game < GameObserver, TSubject
@@ -217,8 +220,6 @@ attributes
     startedAt: DateTime
     gameTime: Integer
 constraints
-    --A game cannot start before a player's account was created
-
     --A player cannot be in 2 game rooms at once
 end
 
@@ -344,11 +345,21 @@ end
 -- Unextended Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
 class BattleShipSocialNetwork
+constraints
+    inv oneGlobalChat: ssnPlayers.chatRooms->select(c|c.chatroomType=ChatroomType::Global)->size()=1
 end
 
 class Chatroom
 attributes
     chatroomType: ChatroomType
+constraints
+    inv privateChatPlayers: 
+        if self.chatroomType = ChatroomType::Private and self.chatroomType <> null
+        then
+            chatPlayers->size()=2
+        else
+            chatPlayers->size()>2
+        endif
 end
 
 class Stat
