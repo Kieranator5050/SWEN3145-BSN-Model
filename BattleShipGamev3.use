@@ -186,9 +186,11 @@ constraints
     inv spaceUnoccupied: 
         self.affectedCells->forAll(c|c.isOccupied=false)
 
-    --A ship can move 1 cell up, 1 cell down or transform to the left or right
-
     --A ship can only move on the current player's board
+    inv validMoveBoard:
+        self.affectedCells
+            ->forAll(c|
+                c.gameBoard.assignedPlayer=self.currentPlayer)
 end
 
 abstract class Request < SSNSubject
@@ -266,11 +268,31 @@ constraints
                     cls = ships->select(s|s.oclIsTypeOf(Cruiser)),
                     bbs = ships->select(s|s.oclIsTypeOf(Battleship))
                 in
-                    self.status = GameStatus::Initialized
-                    implies
-                        pbs->size()<=4 and dds->size()<=3 and
-                        cls->size()<=2 and bbs->size()<=1
+                    pbs->size()<=4 and dds->size()<=3 and
+                    cls->size()<=2 and bbs->size()<=1
             )
+
+    inv cellVisibility:
+    gameBoards
+    ->forAll(gb|
+                if gb.assignedPlayer = GamePlayer::Player1
+                then
+                    gb.cells
+                    ->forAll(c|
+                        c.isVisibleTo=GamePlayer::Player1
+                        and
+                        c.isHiddenTo=GamePlayer::Player2)
+                else
+                    gb.cells
+                    ->forAll(c|
+                        c.isVisibleTo=GamePlayer::Player2
+                        and
+                        c.isHiddenTo=GamePlayer::Player1)
+                endif
+            )
+    
+    inv playersAssigned:
+    gameBoards->forAll(gb|gb.assignedPlayer <> null)
         
 end
 
@@ -395,6 +417,10 @@ constraints
             ship.actionPoints>0
     
     --A ship can only fire on the enemy board
+    inv noSelfFire:
+        attackedCells->forAll(c|
+                c.gameBoard.assignedPlayer <> self.currentPlayer
+            )
 end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
