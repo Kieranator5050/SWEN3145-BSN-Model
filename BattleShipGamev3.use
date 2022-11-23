@@ -211,6 +211,14 @@ constraints
     inv noSelfReports: recievedRs.recipient->forAll(r|r<>self)
     inv noSelfRequests: reqFacts.sentRequest->asSet().recipient->forAll(r|r<>self)
     inv noSelfBlock: block->forAll(p|p.blockedPlayer<>self)
+    inv gameInviteToFriend: 
+    let
+        invites = reqFacts.sentRequest->select(r|r.oclIsTypeOf(GameInvite)),
+        gInviteRecipients = invites.recipient,
+        friendNames = self.friends->select(f|f.isStillFriend)->collect(username)
+    in 
+        gInviteRecipients->forAll(r|friendNames->includes(r.username))
+        
 end
 
 class Game < GameObserver, TSubject
@@ -344,6 +352,12 @@ end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 -- Unextended Classes
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- */
+class Friend
+attributes
+   username: String
+   isStillFriend: Boolean 
+end
+
 class BattleShipSocialNetwork
 constraints
     inv oneGlobalChat: ssnPlayers.chatRooms->select(c|c.chatroomType=ChatroomType::Global)->size()=1
@@ -650,4 +664,9 @@ end
 association TurnShip between
     Turn[1] role turn
     Ship[1] role ship 
+end
+
+association Friends between
+    Friend[*] role friends
+    Player[1] role player
 end
