@@ -157,8 +157,11 @@ attributes
     canRepeat: Boolean
 constraints
     -- The current player turn is player 1 when the turn counter is even and player 2 when the turn counter is odd
-    inv correctPlayer: game.turnCount.mod(2)=0 implies currentPlayer = GamePlayer::Player1
-                        and game.turnCount.mod(2)=1 implies currentPlayer = GamePlayer::Player2
+    inv correctPlayer: (game.turnCount.mod(2)=0 
+                        implies currentPlayer = GamePlayer::Player1)
+                        and 
+                        (game.turnCount.mod(2)=1 
+                        implies currentPlayer = GamePlayer::Player2)
 end
 
 abstract class Ship < GameSubject
@@ -213,9 +216,12 @@ constraints
     inv noSelfBlock: block->forAll(p|p.blockedPlayer<>self)
     inv gameInviteToFriend: 
     let
-        invites = reqFacts.sentRequest->select(r|r.oclIsTypeOf(GameInvite)),
+        invites = reqFacts.sentRequest
+                    ->select(r|r.oclIsTypeOf(GameInvite)),
         gInviteRecipients = invites.recipient,
-        friendNames = self.friends->select(f|f.isStillFriend)->collect(username)
+        friendNames = self.friends
+                    ->select(f|f.isStillFriend)
+                    ->collect(username)
     in 
         gInviteRecipients->forAll(r|friendNames->includes(r.username))
         
@@ -228,7 +234,44 @@ attributes
     startedAt: DateTime
     gameTime: Integer
 constraints
-    --A player cannot be in 2 game rooms at once
+    inv onlyTwoTournPlayers:
+        tournPlayers->size()=2
+
+    inv noBannedPlayers:
+    let 
+        reqPlayer = invite.reqFact.requester,
+        recPlayer = invite.recipient,
+        admins = bsn.ssnPlayers
+                        ->select(p|
+                            p.aRole<>null 
+                            and p.aRole->size()<>0
+                            ),
+        bans = admins.aRole.ssnBans.bPlayer->asSet()
+    in
+        (bans->excludes(reqPlayer) 
+        and 
+        bans->excludes(recPlayer))
+            or
+                (tournPlayers<>null 
+                implies 
+                bans->excludesAll(tournPlayers))
+
+    inv correctShipCount:
+    gameBoards
+    ->forAll(gb|
+                let
+                    ships = gb.cells->collect(ship)->asSet(),
+                    pbs = ships->select(s|s.oclIsTypeOf(PatrolBoat)),
+                    dds = ships->select(s|s.oclIsTypeOf(Destroyer)),
+                    cls = ships->select(s|s.oclIsTypeOf(Cruiser)),
+                    bbs = ships->select(s|s.oclIsTypeOf(Battleship))
+                in
+                    self.status = GameStatus::Initialized
+                    implies
+                        pbs->size()<=4 and dds->size()<=3 and
+                        cls->size()<=2 and bbs->size()<=1
+            )
+        
 end
 
 class Administrator < pRole
@@ -278,6 +321,11 @@ attributes
     startDate: DateTime
     roundInterval: Integer init: 15
     roundIntervalType: RoundIntervalType init: RoundIntervalType::Minutes
+constraints
+    inv bannedPlayersNotJoiners:
+        joiners->forAll(j|bannedPlayers->excludes(j))
+    inv hostNotJoiner:
+        joiners->excludes(host)
 end
 
 class TournRule < TSubject
@@ -669,4 +717,9 @@ end
 association Friends between
     Friend[*] role friends
     Player[1] role player
+end
+
+association bsnGames between
+    BattleShipSocialNetwork[1] role bsn
+    Game[*] role games
 end
