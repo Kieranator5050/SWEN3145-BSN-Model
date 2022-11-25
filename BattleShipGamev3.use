@@ -162,6 +162,14 @@ constraints
                         and 
                         (game.turnCount.mod(2)=1 
                         implies currentPlayer = GamePlayer::Player2)
+            
+    inv validSelectedAP: self.selectedShipAP = ship.actionPoints
+    inv validUsedAP: self.usedAP >= 0 and self.usedAP <= self.selectedShipAP
+    inv turncanRepeatwithAP: 
+        self.canRepeat
+        implies 
+        self.currentShipAP > 0
+
 end
 
 abstract class Ship < GameSubject
@@ -421,6 +429,8 @@ constraints
         attackedCells->forAll(c|
                 c.gameBoard.assignedPlayer <> self.currentPlayer
             )
+    
+    inv noMissRepeat: self.isHit implies self.canRepeat 
 end
 
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
