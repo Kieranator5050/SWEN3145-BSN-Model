@@ -443,6 +443,16 @@ attributes
 end
 
 class BattleShipSocialNetwork
+operations
+    registerNewPlayer(username: String, password: String, pPolicy: PrivacyPolicy)
+    logIn(username: String, password: String)
+    revokeAccountAccess(p: Player)
+    grantAccountAccess(p: Player)
+    blockIpAccess(ipAddress: String)
+    grantIpAccess(ipAddress: String)
+    getCurrentGames()
+    resetRegularLeaderboard()
+    resetTournamentLeaderboard()
 constraints
     inv oneGlobalChat: ssnPlayers.chatRooms->select(c|c.chatroomType=ChatroomType::Global)->size()=1
 end
