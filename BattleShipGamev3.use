@@ -221,6 +221,8 @@ operations
 end
 
 abstract class Leaderboard
+operations
+    displayLeaderboard(): OrderedSet(Player)
 end
 
 abstract class AccessRestriction < SSNSubject
@@ -253,6 +255,7 @@ operations
     setPrivacySettings(ps: PrivacyPolicy): Integer
     sendGameInvite(p: Player): Integer
     respondToGameInvite(): Integer
+    leaveGame(g: Game): Integer
 
 constraints
     inv nullUsername: self.username <> null
@@ -614,6 +617,7 @@ associationclass Accepted between
 attributes
     dateAccepted: DateTime
     gameResult: GameResult init: GameResult::Unassigned
+    playerWinner: GamePlayer
 end
 
 associationclass RoundGames between
@@ -621,6 +625,7 @@ associationclass RoundGames between
     Game[1..*] role games ordered
 attributes
     gameResult: GameResult init: GameResult::Unassigned
+    playerWinner: GamePlayer
 end
 
 associationclass Joiners between
