@@ -219,6 +219,27 @@ attributes
     username: String
     playerGameSlot : GamePlayer init: GamePlayer::Unassigned
     privacyPolicy: PrivacyPolicy init: PrivacyPolicy::Open
+operations
+    findPlayer(username: String): Player
+        pre playerExists: 
+            bsn.ssnPlayers
+                ->select(p|p.username=username)
+                    ->size()=1
+                    
+        post playerFound: 
+            result=bsn.ssnPlayers
+                    ->select(p|p.username=username)
+                        ->asSequence()->first()
+
+    sendFriendRequest(p: Player): Integer
+    blockPlayer(p: Player): Integer
+    viewDetails(p: Player): Integer
+    reportPlayer(p: Player): Integer
+    sendMessage(c: ChatRoom): Integer
+    setPrivacySettings(ps: PrivacyPolicy): Integer
+    sendGameInvite(p: Player): Integer
+    respondToGameInvite(): Integer
+
 constraints
     inv nullUsername: self.username <> null
     inv noSelfReports: recievedRs.recipient->forAll(r|r<>self)
@@ -444,15 +465,21 @@ end
 
 class BattleShipSocialNetwork
 operations
-    registerNewPlayer(username: String, password: String, pPolicy: PrivacyPolicy)
-    logIn(username: String, password: String)
-    revokeAccountAccess(p: Player)
-    grantAccountAccess(p: Player)
-    blockIpAccess(ipAddress: String)
-    grantIpAccess(ipAddress: String)
-    getCurrentGames()
-    resetRegularLeaderboard()
-    resetTournamentLeaderboard()
+    registerNewPlayer(username: String, password: String, pPolicy: PrivacyPolicy): Integer
+        pre noPre: true
+        post playerRegistered: ssnPlayers->select(p|p.username=username)<>null
+
+    logIn(username: String, password: String): Integer
+        pre playerExists: ssnPlayers->select(p|p.username=username)<>null
+        post noPost: true
+
+    revokeAccountAccess(p: Player): Integer
+    grantAccountAccess(p: Player): Integer
+    blockIpAccess(ipAddress: String): Integer
+    grantIpAccess(ipAddress: String): Integer
+    getCurrentGames(): Set(Game)
+    resetRegularLeaderboard(): Integer
+    resetTournamentLeaderboard(): Integer
 constraints
     inv oneGlobalChat: ssnPlayers.chatRooms->select(c|c.chatroomType=ChatroomType::Global)->size()=1
 end
