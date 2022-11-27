@@ -147,14 +147,22 @@ end
 
 abstract class Turn < GameSubject, GameObserver
 attributes
-    currentPlayer: GamePlayer
-    selectedShip: Ship
-    selectedShipClassification: GameShip
-    selectedShipAP: Integer
+    currentPlayer: GamePlayer derived = determineCurrentPlayer()
+    selectedShip: Ship derived = ship
+    selectedShipClassification: GameShip derived = ship.classification
+    selectedShipAP: Integer derived = ship.actionPoints
     usedAP: Integer
     currentShipAP: Integer derived = selectedShipAP-usedAP
     turnTime: DateTime
     canRepeat: Boolean
+operations
+    --Select ship needs to be run to create an association between a turn an a ship
+    selectShip(sc: GameShip): Integer
+    determineCurrentPlayer(): 
+        GamePlayer = if game.turnCount.mod(2)=0 
+                        then GamePlayer::Player1
+                        else GamePlayer::Player2
+                        endif
 constraints
     -- The current player turn is player 1 when the turn counter is even and player 2 when the turn counter is odd
     inv correctPlayer: (game.turnCount.mod(2)=0 
@@ -189,6 +197,8 @@ end
 abstract class MoveAction < Turn
 attributes
     isValid: Boolean
+operations
+    moveShip(fr: Set(BoardCell), to: Set(BoardCell)): Integer
 constraints
     --A ship cannot move into another ship
     inv spaceUnoccupied: 
@@ -204,6 +214,10 @@ end
 abstract class Request < SSNSubject
 attributes
     status: RequestStatus
+operations
+    changeRequestStatus(s: RequestStatus)
+    getRequester(): Player
+    getRecipient(): Player
 end
 
 abstract class Leaderboard
@@ -235,7 +249,7 @@ operations
     blockPlayer(p: Player): Integer
     viewDetails(p: Player): Integer
     reportPlayer(p: Player): Integer
-    sendMessage(c: ChatRoom): Integer
+    sendMessage(p: Chatroom): Integer
     setPrivacySettings(ps: PrivacyPolicy): Integer
     sendGameInvite(p: Player): Integer
     respondToGameInvite(): Integer
@@ -264,9 +278,18 @@ attributes
     turnCount: Integer init: 0
     startedAt: DateTime
     gameTime: Integer
+operations
+    initializeGame(): Integer
+    removeShip(sc: GameShip, gb: GameBoard): Integer
+    damageShip(sc: GameShip, gb: GameBoard): Integer
+    newTurn(): Integer
+    updateGameStatus(gs: GameStatus): Integer
 constraints
     inv onlyTwoTournPlayers:
-        tournPlayers->size()=2
+        let
+            players = round.tourn.joiners
+        in
+        players<>null implies players->size()=2
 
     inv noBannedPlayers:
     let 
@@ -277,15 +300,16 @@ constraints
                             p.aRole<>null 
                             and p.aRole->size()<>0
                             ),
-        bans = admins.aRole.ssnBans.bPlayer->asSet()
+        bans = admins.aRole.ssnBans.bPlayer->asSet(),
+        tPlayers = round.tourn.joiners
     in
         (bans->excludes(reqPlayer) 
         and 
         bans->excludes(recPlayer))
             or
-                (tournPlayers<>null 
+                (tPlayers<>null 
                 implies 
-                bans->excludesAll(tournPlayers))
+                bans->excludesAll(tPlayers))
 
     inv correctShipCount:
     gameBoards
@@ -434,6 +458,8 @@ end
 class FireAction < Turn
 attributes
     isHit: Boolean
+operations
+    fireShip(): Integer
 constraints
     --A ship may only fire if it has the required amount of action points
     inv validFire:
@@ -477,6 +503,7 @@ operations
     grantAccountAccess(p: Player): Integer
     blockIpAccess(ipAddress: String): Integer
     grantIpAccess(ipAddress: String): Integer
+    createNewGame(): Integer
     getCurrentGames(): Set(Game)
     resetRegularLeaderboard(): Integer
     resetTournamentLeaderboard(): Integer
@@ -551,6 +578,11 @@ class Round
 end
 
 class RequestFactory
+operations
+    makeGameInvite(): Integer
+    makeFriendRequest(): Integer
+    makeMessage(c: Chatroom): Integer
+    makeReport(): Integer
 end
 --/* ---------- ---------- ---------- ---------- ---------- ---------- ----------
 --Compositions
@@ -584,9 +616,9 @@ attributes
     gameResult: GameResult init: GameResult::Unassigned
 end
 
-associationclass TournGame between
-    Player[*] role tournPlayers
-    Game[*] role tGames
+associationclass RoundGames between
+    Round[1] role round
+    Game[1..*] role games ordered
 attributes
     gameResult: GameResult init: GameResult::Unassigned
 end
@@ -680,11 +712,6 @@ end
 association Rounds between
     Tournament[1] role tourn
     Round[1..*] role rounds
-end
-
-association RoundGames between
-    Round[1] role round
-    Game[1..*] role games ordered
 end
 
 association BannedTPlayers between
