@@ -828,3 +828,13 @@ association bsnGames between
     BattleShipSocialNetwork[1] role bsn
     Game[*] role games
 end
+
+association ShipBoard between
+    Ship[*] role ships
+    GameBoard[0..1] role gameBoard 
+end
+
+association RepeatedTurn between
+    Turn[1] role prevTurn
+    Turn[0..1] role postTurn
+end
