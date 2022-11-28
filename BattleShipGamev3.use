@@ -287,6 +287,7 @@ operations
     damageShip(sc: GameShip, gb: GameBoard): Integer
     newTurn(): Integer
     updateGameStatus(gs: GameStatus): Integer
+    addPlayerToBoard(p: Player, gb: GameBoard): Integer
 constraints
     inv onlyTwoTournPlayers:
         let
@@ -535,7 +536,7 @@ end
 
 class GameBoard
 attributes
-    assignedPlayerUsername: String
+    assignedPlayerUsername: String derived = player.username
     assignedPlayer: GamePlayer init: GamePlayer::Unassigned
     status: GameBoardStatus
     assignedAt: DateTime
@@ -837,4 +838,9 @@ end
 association RepeatedTurn between
     Turn[1] role prevTurn
     Turn[0..1] role postTurn
+end
+
+association PlayerBoards between
+    Player[1] role player
+    GameBoard[*] role gameBoards 
 end
