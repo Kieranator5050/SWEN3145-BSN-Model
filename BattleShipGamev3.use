@@ -291,9 +291,9 @@ operations
     newTurn(): Integer
         begin
             --Declaring Variables
-            declare gbs:OrderedSet(GameBoard),gb: GameBoard, turnType:String;
+            declare gbs:OrderedSet(GameBoard), gb:GameBoard, turnType:String;
             
-            --Reading  & getting gameboards
+            --Reading turnType & getting gameboards
             turnType := ReadLine();
             gbs:=self.gameBoards->asOrderedSet();
 
@@ -310,6 +310,11 @@ operations
             end;
             gb.createTurn(turnType);
         end
+        
+    --Precondition : Game must already be started
+    pre startedGame: self.status<>null implies self.status=GameStatus::Started
+    --Postcondition : No post
+    post noPost: true 
 
     repeatTurn(t: Turn): Integer
     endTurn(t: Turn): Integer
