@@ -167,6 +167,7 @@ operations
             shipClass:=eClassification->at(stringClassification->indexOf(sc));
             ship := self.game.ships->select(s|s.assignedPlayer=self.currentPlayer and s.classification=shipClass)->asOrderedSet()->first();
             insert(self,ship) into TurnShip;
+            WriteLine('Selected Ship '+sc);
 
             result:=ship
         end
