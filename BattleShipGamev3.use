@@ -182,13 +182,15 @@ end
 
 abstract class Ship < GameSubject
 attributes
-    assignedPlayer: GamePlayer
+    assignedPlayer: GamePlayer derived = gameBoard.assignedPlayer
     healthPoints: Integer init: 0
     damagePoints: Integer init: 0
     actionPoints: Integer init : 0
     size: GameShipSizes
     classification: GameShip --A player has individual classifications
     isOnTheBoard: Boolean init: true
+operations
+    evaluateHit(): Integer
 constraints
     inv onBoard: self.healthPoints > 0 implies self.isOnTheBoard = true 
     		and self.healthPoints < 0 implies self.isOnTheBoard = false
@@ -286,6 +288,8 @@ operations
     removeShip(sc: GameShip, gb: GameBoard): Integer
     damageShip(sc: GameShip, gb: GameBoard): Integer
     newTurn(): Integer
+    repeatTurn(t: Turn): Integer
+    endTurn(t: Turn): Integer
     updateGameStatus(gs: GameStatus): Integer
     addPlayerToBoard(p: Player, gb: GameBoard): Integer
 constraints
@@ -463,7 +467,7 @@ class FireAction < Turn
 attributes
     isHit: Boolean
 operations
-    fireShip(): Integer
+    fireShip(bc: BoardCell): Integer
 constraints
     --A ship may only fire if it has the required amount of action points
     inv validFire:
@@ -540,6 +544,8 @@ attributes
     assignedPlayer: GamePlayer init: GamePlayer::Unassigned
     status: GameBoardStatus
     assignedAt: DateTime
+operations
+    createTurn(type: String): Integer
 constraints
     -- The game board must have 10 ships on both boards when it is initialized. 
     -- 20 Cells are occupied in total on the board when all the ships are placed
@@ -576,6 +582,8 @@ attributes
     isOccupied: Boolean
     isVisibleTo: GamePlayer
     isHiddenTo: GamePlayer
+operations
+    hitCell(): Integer
 end
 
 class Round
