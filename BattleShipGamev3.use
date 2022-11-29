@@ -287,7 +287,30 @@ operations
     initializeGame(): Integer
     removeShip(sc: GameShip, gb: GameBoard): Integer
     damageShip(sc: GameShip, gb: GameBoard): Integer
+
     newTurn(): Integer
+        begin
+            --Declaring Variables
+            declare gbs:OrderedSet(GameBoard),gb: GameBoard, turnType:String;
+            
+            --Reading  & getting gameboards
+            turnType := ReadLine();
+            gbs:=self.gameBoards->asOrderedSet();
+
+            --If the turn is even player 1 else player 2
+            if self.turnCount.mod(2)=0 
+            then 
+                --Player 1
+                gb := gbs->select(gb|gb.assignedPlayer=GamePlayer::Player1)->first();
+                result:=1;
+            else 
+                --Player 2
+                gb := gbs->select(gb|gb.assignedPlayer=GamePlayer::Player2)->first();
+                result:=1;
+            end;
+            gb.createTurn(turnType);
+        end
+
     repeatTurn(t: Turn): Integer
     endTurn(t: Turn): Integer
     updateGameStatus(gs: GameStatus): Integer
@@ -546,6 +569,9 @@ attributes
     assignedAt: DateTime
 operations
     createTurn(type: String): Integer
+        begin
+            result:=1
+        end
 constraints
     -- The game board must have 10 ships on both boards when it is initialized. 
     -- 20 Cells are occupied in total on the board when all the ships are placed
