@@ -622,7 +622,7 @@ operations
                 xString := OrderedSet{'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10'};
                 y := OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J};
                 x := OrderedSet{XAxis::x1, XAxis::x2, XAxis::x3, XAxis::x4, XAxis::x5, XAxis::x6, XAxis::x7, XAxis::x8, XAxis::x9, XAxis::x10};
-                
+
                 t.fireShip(enemyBoard.cells
                             ->select(c|
                                 c.xCoord=x->at(xString->indexOf(cellX))
@@ -630,6 +630,14 @@ operations
                                 c.yCoord=y->at(yString->indexOf(cellY)))
                                     ->asOrderedSet()->first()
                                         );
+
+                if t.canRepeat
+                then
+                    self.createTurn('FireAction');
+                else
+                    self.game.turnCount := self.game.turnCount + 1;
+                    self.game.newTurn();
+                end;
                 result:=0;
             else
                 WriteLine('No fire');
@@ -644,6 +652,9 @@ operations
                 ss := ReadLine();
                 t.selectShip(ss);
                 --t.moveShip();
+                self.game.turnCount := self.game.turnCount+1;
+                t.canRepeat := false;
+                self.game.newTurn();
                 result:=0;
             else
                 WriteLine('No Move');
