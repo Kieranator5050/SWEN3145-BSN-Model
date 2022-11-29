@@ -148,9 +148,9 @@ end
 abstract class Turn < GameSubject, GameObserver
 attributes
     currentPlayer: GamePlayer derived = determineCurrentPlayer()
-    selectedShip: Ship derived = ship
-    selectedShipClassification: GameShip derived = ship.classification
-    selectedShipAP: Integer derived = ship.actionPoints
+    selectedShip: Ship derived = tShip
+    selectedShipClassification: GameShip derived = tShip.classification
+    selectedShipAP: Integer derived = tShip.actionPoints
     usedAP: Integer
     currentShipAP: Integer derived = selectedShipAP-usedAP
     turnTime: DateTime
@@ -158,7 +158,7 @@ attributes
 operations
     --Select ship needs to be run to create an association between a turn an a ship
     --Called from createTurn() in GameBoard
-    selectShip(sc: String): Integer
+    selectShip(sc: String): Ship
         begin
             declare stringClassification:OrderedSet(String), eClassification:OrderedSet(GameShip), shipClass:GameShip, ship:Ship;
             stringClassification:=OrderedSet{'pb1','pb2','pb3','pb4','dd1','dd2','dd3','cl1','cl2','bb'};
@@ -168,7 +168,7 @@ operations
             ship := self.game.ships->select(s|s.assignedPlayer=self.currentPlayer and s.classification=shipClass)->asOrderedSet()->first();
             insert(self,ship) into TurnShip;
 
-            result:=0
+            result:=ship
         end
     determineCurrentPlayer(): 
         GamePlayer = if game.turnCount.mod(2)=0 
@@ -183,7 +183,7 @@ constraints
                         (game.turnCount.mod(2)=1 
                         implies currentPlayer = GamePlayer::Player2)
             
-    inv validSelectedAP: self.selectedShipAP = ship.actionPoints
+    inv validSelectedAP: self.selectedShipAP = tShip.actionPoints
     inv validUsedAP: self.usedAP >= 0 and self.usedAP <= self.selectedShipAP
     inv turncanRepeatwithAP: 
         self.canRepeat
@@ -334,6 +334,41 @@ operations
 
     repeatTurn(t: Turn): Integer
     endTurn(t: Turn): Integer
+        begin
+            declare turnShip: Ship;
+            
+            if turnShip.oclIsTypeOf(PatrolBoat)
+            then
+                t.tShip.actionPoints:=4;
+            else
+                WriteLine('');
+            end;
+
+            if turnShip.oclIsTypeOf(Destroyer)
+            then
+                t.tShip.actionPoints:=3;
+            else
+                WriteLine('');
+            end;
+
+            if turnShip.oclIsTypeOf(Cruiser)
+            then
+                t.tShip.actionPoints:=2;
+            else
+                WriteLine('');
+            end;
+
+            if turnShip.oclIsTypeOf(Battleship)
+            then
+                t.tShip.actionPoints:=1;
+            else
+                WriteLine('');
+            end;
+
+            self.newTurn();
+            result:=0;
+
+        end
     updateGameStatus(gs: GameStatus): Integer
     addPlayerToBoard(p: Player, gb: GameBoard): Integer
 constraints
@@ -367,7 +402,7 @@ constraints
     gameBoards
     ->forAll(gb|
                 let
-                    ships = gb.cells->collect(ship)->asSet(),
+                    ships = gb.cells->collect(pShip)->asSet(),
                     pbs = ships->select(s|s.oclIsTypeOf(PatrolBoat)),
                     dds = ships->select(s|s.oclIsTypeOf(Destroyer)),
                     cls = ships->select(s|s.oclIsTypeOf(Cruiser)),
@@ -511,9 +546,23 @@ class FireAction < Turn
 attributes
     isHit: Boolean
 operations
+    --Called by createTurn()
+    --TurnShip, CurrentPlayerBoard, AttackBoard associations already exist when this is called
     fireShip(bc: BoardCell): Integer
         begin
-            result:=1
+            declare tShip: Ship, eBoard: GameBoard;
+            tShip:=self.tShip;
+            insert(self,bc) into Attack;
+
+            if bc.pShip<>null
+            then
+                --Hit
+                bc.hitCell(tShip);
+                result:=0;
+            else
+                --Miss (End Turn)
+                result:=1;
+            end;
         end
 constraints
     --A ship may only fire if it has the required amount of action points
@@ -595,11 +644,11 @@ operations
     --Called by the Game newTurn() operation
     createTurn(type: String): Integer
         begin
-            declare ss:String, cells:Set(BoardCell), enemyBoard:GameBoard;
+            declare ss:String, cells:Set(BoardCell), enemyBoard:GameBoard, ship:Ship;
 
             if type='FireAction'
             then
-                declare t:FireAction, cellX: String, cellY: String, xString:OrderedSet(String), yString:OrderedSet(String), x:OrderedSet(XAxis), y:OrderedSet(YAxis);
+                declare t:FireAction, cellX: String, cellY: String, xString:OrderedSet(String), yString:OrderedSet(String), x:OrderedSet(XAxis), y:OrderedSet(YAxis), hitResult:Integer;
 
                 enemyBoard:=self.game.gameBoards->select(gb|gb<>self)->asOrderedSet()->first();
 
@@ -611,34 +660,51 @@ operations
 
                 WriteLine('Enter Ship to Select');
                 ss := ReadLine();
-                t.selectShip(ss);
+                ship := t.selectShip(ss);
 
-                WriteLine('Enter X Coordinate');
-                cellX:=ReadLine();
-                WriteLine('Enter Y Coordinate');
-                cellY:=ReadLine();
-
-                yString := OrderedSet{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-                xString := OrderedSet{'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10'};
-                y := OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J};
-                x := OrderedSet{XAxis::x1, XAxis::x2, XAxis::x3, XAxis::x4, XAxis::x5, XAxis::x6, XAxis::x7, XAxis::x8, XAxis::x9, XAxis::x10};
-
-                t.fireShip(enemyBoard.cells
-                            ->select(c|
-                                c.xCoord=x->at(xString->indexOf(cellX))
-                                and
-                                c.yCoord=y->at(yString->indexOf(cellY)))
-                                    ->asOrderedSet()->first()
-                                        );
-
-                if t.canRepeat
+                if ship.actionPoints<=0
                 then
-                    self.createTurn('FireAction');
+                    WriteLine('Enter X Coordinate');
+                    cellX:=ReadLine();
+                    WriteLine('Enter Y Coordinate');
+                    cellY:=ReadLine();
+
+                    yString := OrderedSet{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+                    xString := OrderedSet{'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10'};
+                    y := OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J};
+                    x := OrderedSet{XAxis::x1, XAxis::x2, XAxis::x3, XAxis::x4, XAxis::x5, XAxis::x6, XAxis::x7, XAxis::x8, XAxis::x9, XAxis::x10};
+
+                    -- 0 Hit, 1 Miss
+                    hitResult := t.fireShip(enemyBoard.cells
+                                ->select(c|
+                                    c.xCoord=x->at(xString->indexOf(cellX))
+                                    and
+                                    c.yCoord=y->at(yString->indexOf(cellY)))
+                                        ->asOrderedSet()->first()
+                                            );
+                    
+                    -- If hit then repeat else if miss then end
+                    if hitResult=0
+                    then
+                        t.canRepeat := true
+                    else
+                        t.canRepeat := false
+                    end;
+
+                    if t.canRepeat
+                    then
+                        self.createTurn('FireAction');
+                    else
+                        self.game.turnCount := self.game.turnCount + 1;
+                        self.game.endTurn(t);
+                        result:=0;
+                    end;
+                    result:=0;
                 else
-                    self.game.turnCount := self.game.turnCount + 1;
-                    self.game.newTurn();
+                    self.createTurn('FireAction');
                 end;
-                result:=0;
+
+
             else
                 WriteLine('No fire');
             end;
@@ -659,8 +725,6 @@ operations
             else
                 WriteLine('No Move');
             end;
-            
-            result:=1;
         end
 constraints
     -- The game board must have 10 ships on both boards when it is initialized. 
@@ -668,7 +732,7 @@ constraints
     inv validInitShipCount: 
         (status=GameBoardStatus::Assigned and game.status=GameStatus::Initialized)
             implies
-                cells->select(c|c.ship->size()=1)->size()=20
+                cells->select(c|c.pShip->size()=1)->asSet()->size()=20
     
     -- Ships should be placed vertically only
     -- Recall a ship can be at most 4 cells long
@@ -699,7 +763,11 @@ attributes
     isVisibleTo: GamePlayer
     isHiddenTo: GamePlayer
 operations
-    hitCell(): Integer
+    --Called by fireShip()
+    hitCell(hitBy: Ship): Integer
+        begin
+            result:=0
+        end
 end
 
 class Round
@@ -920,7 +988,7 @@ association GameTurns between
 end
 
 association PositionedOn between
-    Ship[0..1] role ship 
+    Ship[0..1] role pShip 
     BoardCell[0..*] role shipSpace
 end
 
@@ -941,7 +1009,7 @@ end
 
 association TurnShip between
     Turn[1] role turn
-    Ship[1] role ship 
+    Ship[1] role tShip 
 end
 
 association Friends between
