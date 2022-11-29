@@ -157,7 +157,19 @@ attributes
     canRepeat: Boolean
 operations
     --Select ship needs to be run to create an association between a turn an a ship
-    selectShip(sc: GameShip): Integer
+    --Called from createTurn() in GameBoard
+    selectShip(sc: String): Integer
+        begin
+            declare stringClassification:OrderedSet(String), eClassification:OrderedSet(GameShip), shipClass:GameShip, ship:Ship;
+            stringClassification:=OrderedSet{'pb1','pb2','pb3','pb4','dd1','dd2','dd3','cl1','cl2','bb'};
+            eClassification:=OrderedSet{GameShip::pb1,GameShip::pb2,GameShip::pb3,GameShip::pb4,GameShip::dd1,GameShip::dd2,GameShip::dd3,GameShip::cl1,GameShip::cl2,GameShip::bb};
+
+            shipClass:=eClassification->at(stringClassification->indexOf(sc));
+            ship := self.game.ships->select(s|s.assignedPlayer=self.currentPlayer and s.classification=shipClass)->asOrderedSet()->first();
+            insert(self,ship) into TurnShip;
+
+            result:=0
+        end
     determineCurrentPlayer(): 
         GamePlayer = if game.turnCount.mod(2)=0 
                         then GamePlayer::Player1
@@ -201,6 +213,9 @@ attributes
     isValid: Boolean
 operations
     moveShip(fr: Set(BoardCell), to: Set(BoardCell)): Integer
+        begin
+            result := 0;
+        end
 constraints
     --A ship cannot move into another ship
     inv spaceUnoccupied: 
@@ -294,6 +309,8 @@ operations
             declare gbs:OrderedSet(GameBoard), gb:GameBoard, turnType:String;
             
             --Reading turnType & getting gameboards
+            WriteLine('Enter Turn Type');
+            WriteLine('FireAction or MoveAction');
             turnType := ReadLine();
             gbs:=self.gameBoards->asOrderedSet();
 
@@ -302,15 +319,14 @@ operations
             then 
                 --Player 1
                 gb := gbs->select(gb|gb.assignedPlayer=GamePlayer::Player1)->first();
-                result:=1;
             else 
                 --Player 2
                 gb := gbs->select(gb|gb.assignedPlayer=GamePlayer::Player2)->first();
-                result:=1;
             end;
             gb.createTurn(turnType);
+            result:=0
         end
-        
+
     --Precondition : Game must already be started
     pre startedGame: self.status<>null implies self.status=GameStatus::Started
     --Postcondition : No post
@@ -496,6 +512,9 @@ attributes
     isHit: Boolean
 operations
     fireShip(bc: BoardCell): Integer
+        begin
+            result:=1
+        end
 constraints
     --A ship may only fire if it has the required amount of action points
     inv validFire:
@@ -573,9 +592,64 @@ attributes
     status: GameBoardStatus
     assignedAt: DateTime
 operations
+    --Called by the Game newTurn() operation
     createTurn(type: String): Integer
         begin
-            result:=1
+            declare ss:String, cells:Set(BoardCell), enemyBoard:GameBoard;
+
+            if type='FireAction'
+            then
+                declare t:FireAction, cellX: String, cellY: String, xString:OrderedSet(String), yString:OrderedSet(String), x:OrderedSet(XAxis), y:OrderedSet(YAxis);
+
+                enemyBoard:=self.game.gameBoards->select(gb|gb<>self)->asOrderedSet()->first();
+
+                t:=new FireAction();
+
+                insert(self.game,t) into GameTurns;
+                insert(t,self) into CurrentPlayerBoard;
+                insert(t,enemyBoard) into AttackBoard;
+
+                WriteLine('Enter Ship to Select');
+                ss := ReadLine();
+                t.selectShip(ss);
+
+                WriteLine('Enter X Coordinate');
+                cellX:=ReadLine();
+                WriteLine('Enter Y Coordinate');
+                cellY:=ReadLine();
+
+                yString := OrderedSet{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
+                xString := OrderedSet{'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10'};
+                y := OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J};
+                x := OrderedSet{XAxis::x1, XAxis::x2, XAxis::x3, XAxis::x4, XAxis::x5, XAxis::x6, XAxis::x7, XAxis::x8, XAxis::x9, XAxis::x10};
+                
+                t.fireShip(enemyBoard.cells
+                            ->select(c|
+                                c.xCoord=x->at(xString->indexOf(cellX))
+                                and
+                                c.yCoord=y->at(yString->indexOf(cellY)))
+                                    ->asOrderedSet()->first()
+                                        );
+                result:=0;
+            else
+                WriteLine('No fire');
+            end;
+
+            if type='MoveAction'
+            then
+                declare t:MoveAction;
+                t:=new MoveAction();
+                insert(self.game,t) into GameTurns;
+                insert(t,self) into CurrentPlayerBoard;
+                ss := ReadLine();
+                t.selectShip(ss);
+                --t.moveShip();
+                result:=0;
+            else
+                WriteLine('No Move');
+            end;
+            
+            result:=1;
         end
 constraints
     -- The game board must have 10 ships on both boards when it is initialized. 
