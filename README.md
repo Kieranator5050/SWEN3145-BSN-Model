@@ -17,3 +17,13 @@
     <li>Right click</li>
     <li>Load Layout</li>
 </ol>
+
+## Testing
+<ul>
+    <li>
+        Run the following command to simulate a play
+        <ul>
+            <li>open PlayTest\After_Play.cmd</li>
+        </ul>
+    </li>
+</ul>
