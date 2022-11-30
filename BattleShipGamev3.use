@@ -5,7 +5,7 @@ model BattleShipGame
 enum PrivacyPolicy { Closed, FriendsOnly, Open, Unassigned }
 enum YAxis { A, B, C, D, E, F, G, H, I, J }
 enum XAxis { x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 }
-enum GameStatus { Starting ,Initialized, Started, Over }
+enum GameStatus { Starting ,Initialized, Started, TurnInProgress, Over }
 enum TournamentStatus { Open, InProgress, Closed }
 enum JoinedTStatus { Joined, Rejected, Banned, Eliminated, Left }
 enum RoundIntervalType { Minutes, Hours, Days }
@@ -376,6 +376,8 @@ operations
         end
     updateGameStatus(gs: GameStatus): Integer
     addPlayerToBoard(p: Player, gb: GameBoard): Integer
+    endGame(): Integer
+    startGame(): Integer
 constraints
     inv onlyTwoTournPlayers:
         let
@@ -438,7 +440,22 @@ constraints
     
     inv playersAssigned:
     gameBoards->forAll(gb|gb.assignedPlayer <> null)
-        
+
+    statemachines
+        psm GameStates
+        states
+            start: initial
+            Initialized [status=GameStatus::Initialized]
+            Started [status=GameStatus::Started]
+            TurnInProgress [status=GameStatus::TurnInProgress]
+            Over: final [status=GameStatus::Over]
+        transitions
+            start->Initialized{initializeGame()}
+            Initialized->Started{startGame()}
+            Started->TurnInProgress{newTurn()}
+            TurnInProgress->Started{endTurn()}
+            Started->Over{endTurn()}
+    end
 end
 
 class Administrator < pRole
@@ -750,6 +767,7 @@ operations
                 WriteLine('No fire');
             end;
 
+            --TODO
             if type='MoveAction'
             then
                 declare t:MoveAction;
