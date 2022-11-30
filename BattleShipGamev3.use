@@ -310,9 +310,7 @@ operations
             declare gbs:OrderedSet(GameBoard), gb:GameBoard, turnType:String;
             
             --Reading turnType & getting gameboards
-            WriteLine('Enter Turn Type');
-            WriteLine('FireAction or MoveAction');
-            turnType := ReadLine();
+            WriteLine('=================');
             gbs:=self.gameBoards->asOrderedSet();
 
             --If the turn is even player 1 else player 2
@@ -320,10 +318,16 @@ operations
             then 
                 --Player 1
                 gb := gbs->select(gb|gb.assignedPlayer=GamePlayer::Player1)->first();
+                WriteLine('Playing as Player1');
             else 
                 --Player 2
                 gb := gbs->select(gb|gb.assignedPlayer=GamePlayer::Player2)->first();
+                WriteLine('Playing as Player2');
             end;
+            WriteLine('Turn : ' + self.turnCount.toString());
+            WriteLine('');
+            WriteLine('Enter Turn Type [FireAction] | [MoveAction(WIP)]');
+            turnType := ReadLine();
             gb.createTurn(turnType);
             result:=0
         end
@@ -645,8 +649,10 @@ operations
     --Called by the Game newTurn() operation
     createTurn(type: String): Integer
         begin
-            declare ss:String, cells:Set(BoardCell), enemyBoard:GameBoard, ship:Ship;
-
+            declare ss:String, cells:Set(BoardCell), enemyBoard:GameBoard, ship:Ship,  stringClassification: OrderedSet(String), i:Integer;
+            
+            stringClassification:=OrderedSet{'pb1','pb2','pb3','pb4','dd1','dd2','dd3','cl1','cl2','bb'};
+            
             if type='FireAction'
             then
                 declare t:FireAction, cellX: String, cellY: String, xString:OrderedSet(String), yString:OrderedSet(String), x:OrderedSet(XAxis), y:OrderedSet(YAxis), hitResult:Integer;
@@ -659,21 +665,53 @@ operations
                 insert(t,self) into CurrentPlayerBoard;
                 insert(t,enemyBoard) into AttackBoard;
 
-                WriteLine('Enter Ship to Select');
+                WriteLine('----------------------');
+                WriteLine('Enter Ship to Select from the following');
+                for s in stringClassification do
+                    Write(s+' ');
+                end;
+                WriteLine('');
+
                 ss := ReadLine();
                 ship := t.selectShip(ss);
 
-                if ship.actionPoints<=0
+                if ship.actionPoints>=0
                 then
-                    WriteLine('Enter X Coordinate');
-                    cellX:=ReadLine();
-                    WriteLine('Enter Y Coordinate');
-                    cellY:=ReadLine();
-
                     yString := OrderedSet{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
                     xString := OrderedSet{'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10'};
                     y := OrderedSet{YAxis::A, YAxis::B, YAxis::C, YAxis::D, YAxis::E, YAxis::F, YAxis::G, YAxis::H, YAxis::I, YAxis::J};
                     x := OrderedSet{XAxis::x1, XAxis::x2, XAxis::x3, XAxis::x4, XAxis::x5, XAxis::x6, XAxis::x7, XAxis::x8, XAxis::x9, XAxis::x10};
+
+                    WriteLine('__________ MAP ___________');
+                    i:=0;
+                    for yC in yString->reverse() do
+                        for xC in xString do
+                            if  i>= 9
+                            then
+                                Write('['+yC + ' ' + xC +']');
+                                WriteLine('');
+                                i:=0;
+                            else
+                                Write('['+yC + ' ' + xC+']');
+                                i:=i+1;
+                            end;
+                        end;
+                    end;
+
+                    WriteLine('__________________________');
+                    WriteLine('Enter Y Coordinate || ');
+                    for yC in yString do
+                        Write('[' + yC + '] ');
+                    end;
+                    WriteLine('');
+                    cellY:=ReadLine();
+                    
+                    WriteLine('Enter X Coordinate || ');
+                    for xC in xString do
+                        Write('[' + xC + '] ');
+                    end;
+                    WriteLine('');
+                    cellX:=ReadLine();
 
                     -- 0 Hit, 1 Miss
                     hitResult := t.fireShip(enemyBoard.cells
@@ -685,10 +723,12 @@ operations
                                             );
                     
                     -- If hit then repeat else if miss then end
-                    if hitResult=0
+                    if hitResult=0 and ship.actionPoints>0
                     then
+                        WriteLine('HIT!!');
                         t.canRepeat := true
                     else
+                        WriteLine('MISS!!');
                         t.canRepeat := false
                     end;
 
@@ -716,6 +756,12 @@ operations
                 t:=new MoveAction();
                 insert(self.game,t) into GameTurns;
                 insert(t,self) into CurrentPlayerBoard;
+
+                WriteLine('----------------------');
+                WriteLine('Enter Ship to Select');
+                for s in stringClassification do
+                    Write(s+' ');
+                end;
                 ss := ReadLine();
                 t.selectShip(ss);
                 --t.moveShip();

@@ -1,4 +1,4 @@
-#-- open ObjectDiagrams\InitializeGame\After_InitializeGame.cmd
+#-- open PlayTest\After_Play.cmd
 
 if __name__ == '__main__':
 
@@ -64,6 +64,7 @@ if __name__ == '__main__':
             for j in range(1,i+1):
                 number = lambda n,t: "" if n==1 and t=='Battleship' else n
                 ship = f'{shipNameDict[i]}{p}{number(j,shipTypeDict[i])}'
+                gbs = {'a':'b1','b':'b2'}
                 lines.append(f'!create {ship}: {shipTypeDict[i]}')
                 shipClass = list(ship)
                 shipClass.pop(2)
@@ -75,6 +76,7 @@ if __name__ == '__main__':
                 lines.append(f'!set {ship}.damagePoints := {shipHPDP[i]}')
                 lines.append(f'!set {ship}.actionPoints := {shipAP[i]}')
                 lines.append(f'!insert (g1, {ship}) into GameShips')
+                lines.append(f'!insert ({ship}, {gbs[p]}) into ShipBoard')
                 
                 getCells = lambda p : p1cells if p=='a' else p2cells
                 cells = getCells(p)
@@ -90,7 +92,11 @@ if __name__ == '__main__':
             
 
     """Printing lines to the cmd"""
-    file = open('After_InitializeGame.cmd', 'w')
+    file = open('After_Play.cmd', 'w')
+
+    lines.append('!set g1.status := GameStatus::Started')
+    lines.append('!g1.newTurn()')
+
     for line in lines:
         print(line, file = file)
     file.close()
