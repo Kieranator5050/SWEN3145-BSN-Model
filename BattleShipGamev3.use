@@ -171,6 +171,9 @@ operations
 
             result:=ship
         end
+    pre gameinit2: self.game.status = GameStatus::Started and self.currentPlayerBoard = GameBoardStatus::Assigned
+    post selectSp: self.selectedShip = result
+    
     determineCurrentPlayer(): 
         GamePlayer = if game.turnCount.mod(2)=0 
                         then GamePlayer::Player1
@@ -331,11 +334,11 @@ operations
             gb.createTurn(turnType);
             result:=0
         end
-
+    //TODO newturn
     --Precondition : Game must already be started
     pre startedGame: self.status<>null implies self.status=GameStatus::Started
     --Postcondition : No post
-    post noPost: true 
+    post turnIncr: self.turnCount@pre < self.turnCount
 
     repeatTurn(t: Turn): Integer
     endTurn(t: Turn): Integer
@@ -374,6 +377,10 @@ operations
             result:=0;
 
         end
+    //TODO endTurn
+    pre gameBAsgn: self.status = GameBoardStatus::Assigned
+    post:true
+
     updateGameStatus(gs: GameStatus): Integer
     addPlayerToBoard(p: Player, gb: GameBoard): Integer
 constraints
@@ -569,6 +576,11 @@ operations
                 result:=1;
             end;
         end
+    //TODO fireshipr
+    pre gameinit: self.game.status = GameStatus::Started and self.currentPlayerBoard = GameBoardStatus::Assigned and 
+self.enemyPlayerBoard = GameBoardStatus::Assigned
+
+    post actionP: self.selectedShipAP@pre > self.selectedShipAP
 constraints
     --A ship may only fire if it has the required amount of action points
     inv validFire:
@@ -773,6 +785,9 @@ operations
                 WriteLine('No Move');
             end;
         end
+        //TODO createTurn
+        pre gameBAsgn: self.status = GameBoardStatus::Assigned
+        post turnIncr2: self.game.turnCount@pre < self.game.turnCount
 constraints
     -- The game board must have 10 ships on both boards when it is initialized. 
     -- 20 Cells are occupied in total on the board when all the ships are placed
